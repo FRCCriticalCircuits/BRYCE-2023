@@ -6,8 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.TeleopDrive;
-import frc.robot.commands.Auto.DriveStraight30;
-import frc.robot.subsystems.Drive.DriveSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -37,7 +36,7 @@ public class RobotContainer {
       )
     );
 
-    autoChooser.setDefaultOption("DRIVE STRAIGHT 30", new DriveStraight30(m_driveSubsystem));
+    //autoChooser.setDefaultOption("DRIVE STRAIGHT 30", new DriveStraight30(m_driveSubsystem));
 
     SmartDashboard.putData("AUTO", autoChooser);
   }
