@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 
@@ -32,6 +33,8 @@ public class Module {
         forwardPID = forward.getPIDController();
         turnPID = turn.getPIDController();
 
+        forwardPID.setSmartMotionMaxVelocity(Constants.PhysicalConstants.MAX_VELOCITY_RPM, 0);
+
         forwardEncoder = forward.getEncoder();
         turnEncoder = turn.getEncoder();
 
@@ -43,6 +46,9 @@ public class Module {
 
         forwardEncoder.setPosition(0.0);
         turnEncoder.setPosition(0.0);
+
+        forward.burnFlash();
+        turn.burnFlash();
     }
 
     public void setForwardPID(double p, double i, double d, double f, int slotID) {
@@ -116,6 +122,14 @@ public class Module {
 
     public void setSpeed(double speed) {
         forward.set(speed);
+    }
+
+    public void setState(SwerveModuleState state){
+        double velocity = state.speedMetersPerSecond;
+        double angle = state.angle.getDegrees();
+
+        setAngle(angle);
+        forwardPID.setReference(velocity, ControlType.kVelocity);
     }
 
     public double getSpeed(){

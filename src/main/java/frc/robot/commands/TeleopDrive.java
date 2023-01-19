@@ -42,7 +42,7 @@ public class TeleopDrive extends CommandBase {
       y = 0;
     }
 
-    double magnitude = Math.sqrt(Math.pow(x1, 2) + Math.pow(y, 2));
+    //double magnitude = Math.sqrt(Math.pow(x1, 2) + Math.pow(y, 2));
 
     double a = x1 - x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_TO_CORNER / 2));
     double b = x1 + x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_TO_CORNER / 2));

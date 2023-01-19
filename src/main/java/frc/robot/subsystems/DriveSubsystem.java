@@ -17,9 +17,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
+    private DriveSubsystem instance;
+
     public Module frontLeft = new Module(
-        Constants.MotorIDs.FRONT_LEFT_FORWARD_ID,
-        Constants.MotorIDs.FRONT_LEFT_ROTATION_ID
+      Constants.MotorIDs.FRONT_LEFT_FORWARD_ID,
+      Constants.MotorIDs.FRONT_LEFT_ROTATION_ID
     );
 
     public Module frontRight = new Module(
@@ -69,13 +71,16 @@ public class DriveSubsystem extends SubsystemBase {
     setup();
   }
 
+  public void getInstance(){
+    if(instance == null){
+      instance = new DriveSubsystem();
+    }
+  }
+
   public void setup(){
     // ------------------
     // SET PID VALUES
     // ------------------
-
-    
-
 
     frontLeft.setForwardPID(
         Constants.PIDConstants.FRONT_LEFT_FORWARD_PID0_P, 
@@ -134,7 +139,6 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
-  
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }

@@ -38,6 +38,9 @@ public final class Constants {
     public static final double DRIVE_GEAR_RATIO = 6.75;
     public static final double ROTATION_GEAR_RATIO = 150 / 7;
 
+    public static final double MAX_VELOCITY_RPM = 217.5;
+    public static final double MAX_VELOCITY_RPS = 3.625;
+
     public static final double SIDE_LENGTH = 38.0;
     public static final double SIDE_WIDTH = 22.0;
     public static final double SIDE_TO_CORNER = 21.9544984001;
