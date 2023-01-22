@@ -9,15 +9,15 @@ public final class Constants {
     //  OPERATORS THRESHOLDS
     // -----------------------------
 
-    public static final double DRIVER_X1_THRESHOLD = 0.1;
-    public static final double DRIVER_X2_THRESHOLD = 0.1;
-    public static final double DRIVER_Y1_THRESHOLD = 0.1;
-    public static final double DRIVER_Y2_THRESHOLD = 0.1;
+    public static final double DRIVER_X1_THRESHOLD = 0.01;
+    public static final double DRIVER_X2_THRESHOLD = 0.01;
+    public static final double DRIVER_Y1_THRESHOLD = 0.01;
+    public static final double DRIVER_Y2_THRESHOLD = 0.01;
 
-    public static final double OPERATOR_X1_THEESHOLD = 0.1;
-    public static final double OPERATOR_X2_THRESHOLD = 0.1;
-    public static final double OPERATOR_Y1_THRESHOLD = 0.1;
-    public static final double OPERATOR_Y2_THRESHOLD = 0.1;
+    public static final double OPERATOR_X1_THEESHOLD = 0.01;
+    public static final double OPERATOR_X2_THRESHOLD = 0.01;
+    public static final double OPERATOR_Y1_THRESHOLD = 0.01;
+    public static final double OPERATOR_Y2_THRESHOLD = 0.01;
   }
 
   public static class MotorIDs {
