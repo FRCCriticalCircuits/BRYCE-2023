@@ -45,6 +45,9 @@ public final class Constants {
     public static final double SIDE_WIDTH = 22.0;
     public static final double SIDE_TO_CORNER = 21.9544984001;
 
+    public static final double LL_HEIGHT = 1;
+    public static final double LL_CUBE_GOAL_HEIGHT = 2;
+    public static final double LL_PICKUP_GOAL_HEIGHT = 4;
   }
 
   public static class PIDConstants {
