@@ -8,16 +8,19 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Module {
+public class Module extends SubsystemBase{
     private CANSparkMax forward;
     private CANSparkMax turn;
     private SparkMaxPIDController forwardPID, turnPID;
     private RelativeEncoder forwardEncoder, turnEncoder;
     private int forward_ID, turn_ID;
+    private double gain;
 
     public Module(int forward_ID, int turn_ID) {
         this.forward_ID = forward_ID;
@@ -94,6 +97,11 @@ public class Module {
         turnEncoder.setPosition(0);
     }
 
+    public void resetEncoders(){
+        forwardEncoder.setPosition(0);
+        turnEncoder.setPosition(0);
+    }
+
     public double closestAngle(double angle) {
         double dir = (angle % 360) - (getAngle() % 360);
 
@@ -107,21 +115,20 @@ public class Module {
     public void setAngle(double angle) {
         double setpointAngle = closestAngle(angle);
         double setpointAngleInvert = closestAngle(angle + 180);
-        turnPID.setReference(getAngle() + closestAngle(angle), ControlType.kPosition);
 
         if(Math.abs(setpointAngle) <= Math.abs(setpointAngleInvert)){
             
-            setInverted(false);
+            setGain(1);
             turnPID.setReference(getAngle() + setpointAngle, ControlType.kPosition);
         }else{
 
-            setInverted(true);
+            setGain(-1);
             turnPID.setReference(getAngle() + setpointAngleInvert, ControlType.kPosition);
         }
     }
 
     public void setSpeed(double speed) {
-        forward.set(speed);
+        forward.set(gain * speed);
     }
 
     public void setState(SwerveModuleState state){
@@ -143,10 +150,10 @@ public class Module {
     }
 
     public double getAngle() {
-        return (turnEncoder.getPosition());
+        return turnEncoder.getPosition();
     }
 
-    public Rotation2d getRotation2d() {
+    public Rotation2d getRotation() {
         return Rotation2d.fromDegrees(getAngle());
     }
 
@@ -154,11 +161,8 @@ public class Module {
         return (forwardEncoder.getPosition());
     }
 
-    public void setInverted(boolean invert) {
-        if(invert){
-            forward.setInverted(true);
-        }else{
-            forward.setInverted(false);
-        }
+    public void setGain(double gain){
+        this.gain = gain;
     }
+
 }

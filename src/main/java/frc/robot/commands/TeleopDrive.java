@@ -44,20 +44,20 @@ public class TeleopDrive extends CommandBase {
 
     //double magnitude = Math.sqrt(Math.pow(x1, 2) + Math.pow(y, 2));
 
-    double a = x1 - x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_TO_CORNER / 2));
-    double b = x1 + x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_TO_CORNER / 2));
-    double c = y - x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_TO_CORNER / 2));
-    double d = y + x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_TO_CORNER / 2));
+    double a = x1 - x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_LENGTH / Constants.PhysicalConstants.SIDE_TO_CORNER ));
+    double b = x1 + x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_LENGTH / Constants.PhysicalConstants.SIDE_TO_CORNER));
+    double c = y - x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_WIDTH / Constants.PhysicalConstants.SIDE_TO_CORNER));
+    double d = y + x2 * (Constants.PhysicalConstants.SIDE_LENGTH / (Constants.PhysicalConstants.SIDE_WIDTH / Constants.PhysicalConstants.SIDE_TO_CORNER));
 
     double frontleftspeed = Math.sqrt(Math.pow(b, 2) + Math.pow(c, 2));
     double frontrightspeed = Math.sqrt(Math.pow(b, 2) + Math.pow(d, 2));
     double rearleftspeed = Math.sqrt(Math.pow(a, 2) + Math.pow(c, 2));
     double rearrightspeed = Math.sqrt(Math.pow(a, 2) + Math.pow(d, 2));
 
-    double frontleftangle = Math.atan2(b, c) * 360 / Math.PI;
-    double frontrightangle = Math.atan2(b, d) * 360 / Math.PI;
-    double rearleftangle = Math.atan2(a, c) * 360 / Math.PI;
-    double rearrightangle = Math.atan2(a, d) * 360 / Math.PI;
+    double frontleftangle = Math.atan2(b, c) * 180 / Math.PI;
+    double frontrightangle = Math.atan2(b, d) * 180 / Math.PI;
+    double rearleftangle = Math.atan2(a, c) * 180 / Math.PI;
+    double rearrightangle = Math.atan2(a, d) * 180 / Math.PI;
 
     // --------------------------
 
@@ -74,17 +74,6 @@ public class TeleopDrive extends CommandBase {
       drive.frontRight.setAngle(frontrightangle);
       drive.rearLeft.setAngle(rearleftangle);
       drive.rearRight.setAngle(rearrightangle);
-   
-
-      //SmartDashboard.putNumber("DEG FRONT LEFT TARGET", frontleftangle);
-      //SmartDashboard.putNumber("DEG FRONT RIGHT TARGET", frontrightangle);
-      //SmartDashboard.putNumber("DEG REAR LEFT TARGET", rearleftangle);
-      //SmartDashboard.putNumber("DEG REAR RIGHT TARGET", rearrightangle);
-
-      SmartDashboard.putNumber("SPEED FRONT LEFT", drive.frontLeft.getSpeed());
-      SmartDashboard.putNumber("SPEED FRONT RIGHT", drive.frontRight.getSpeed());
-      SmartDashboard.putNumber("SPEED REAR LEFT", drive.rearLeft.getSpeed());
-      SmartDashboard.putNumber("SPEED REAR RIGHT", drive.rearRight.getSpeed());
 
   }
 

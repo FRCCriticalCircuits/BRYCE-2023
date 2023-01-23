@@ -11,7 +11,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.AnalogEncoder;
+import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -41,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Joystick driverJoystick = new Joystick(0);
 
-    private AHRS gyro = new AHRS();
+    private AnalogGyro gyro = new AnalogGyro(0);
 
     private Translation2d frontleftLocation = new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2));
     private Translation2d frontrightLocation = new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -1 * Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2));
@@ -56,10 +59,10 @@ public class DriveSubsystem extends SubsystemBase {
     );
 
     private SwerveModulePosition[] modulePositions = {
-      new SwerveModulePosition(frontLeft.getDistance(), frontLeft.getRotation2d()),
-      new SwerveModulePosition(frontRight.getDistance(), frontRight.getRotation2d()),
-      new SwerveModulePosition(rearLeft.getDistance(), rearLeft.getRotation2d()),
-      new SwerveModulePosition(rearRight.getDistance(), rearRight.getRotation2d())
+      new SwerveModulePosition(frontLeft.getDistance(), frontLeft.getRotation()),
+      new SwerveModulePosition(frontRight.getDistance(), frontRight.getRotation()),
+      new SwerveModulePosition(rearLeft.getDistance(), rearLeft.getRotation()),
+      new SwerveModulePosition(rearRight.getDistance(), rearRight.getRotation())
     };
 
     private SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, getHeading(), modulePositions);
@@ -71,11 +74,13 @@ public class DriveSubsystem extends SubsystemBase {
     setup();
   }
 
+  /*
   public void getInstance(){
     if(instance == null){
       instance = new DriveSubsystem();
     }
   }
+ */
 
   public void setup(){
     // ------------------
@@ -149,20 +154,20 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   public void OutputModuleInfo() {
-    SmartDashboard.getNumber("FRONT LEFT ANGLE", frontLeft.getAngle());
-    SmartDashboard.getNumber("FRONT RIGHT ANGLE", frontRight.getAngle());
-    SmartDashboard.getNumber("REAR LEFT ANGLE", rearLeft.getAngle());
-    SmartDashboard.getNumber("REAR RIGHT ANGLE", rearRight.getAngle());
+    SmartDashboard.putNumber("FRONT LEFT ANGLE", frontLeft.getAngle());
+    SmartDashboard.putNumber("FRONT RIGHT ANGLE", frontRight.getAngle());
+    SmartDashboard.putNumber("REAR LEFT ANGLE", rearLeft.getAngle());
+    SmartDashboard.putNumber("REAR RIGHT ANGLE", rearRight.getAngle());
     
-    SmartDashboard.getNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
-    SmartDashboard.getNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
-    SmartDashboard.getNumber("REAR LEFT SPEED", rearLeft.getSpeed());
-    SmartDashboard.getNumber("REAR RIGHT SPEED", rearRight.getSpeed());
+    SmartDashboard.putNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
+    SmartDashboard.putNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
+    SmartDashboard.putNumber("REAR LEFT SPEED", rearLeft.getSpeed());
+    SmartDashboard.putNumber("REAR RIGHT SPEED", rearRight.getSpeed());
 
-    SmartDashboard.getNumber("FRONT LEFT DISTANCE", frontLeft.getDistance());
-    SmartDashboard.getNumber("FRONT RIGHT DISTANCE", frontRight.getDistance());
-    SmartDashboard.getNumber("REAR LEFT DISTANCE", rearLeft.getDistance());
-    SmartDashboard.getNumber("REAR RIGHT DISTANCE", rearRight.getDistance());    
+    SmartDashboard.putNumber("FRONT LEFT DISTANCE", frontLeft.getDistance());
+    SmartDashboard.putNumber("FRONT RIGHT DISTANCE", frontRight.getDistance());
+    SmartDashboard.putNumber("REAR LEFT DISTANCE", rearLeft.getDistance());
+    SmartDashboard.putNumber("REAR RIGHT DISTANCE", rearRight.getDistance());
   }
 
   @Override
@@ -170,7 +175,6 @@ public class DriveSubsystem extends SubsystemBase {
     poseEstimator.update(getHeading(), modulePositions);
     odometry.update(getHeading(), modulePositions);
     OutputModuleInfo();
-    SmartDashboard.updateValues();
   }
 
   @Override
