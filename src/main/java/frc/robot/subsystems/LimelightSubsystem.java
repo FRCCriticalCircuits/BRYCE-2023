@@ -13,7 +13,7 @@ import frc.robot.Constants;
 public class LimelightSubsystem extends SubsystemBase {
     private NetworkTable table;
 
-    private enum TargetType {
+    private enum TargetType{
         GOAL, 
         PICKUP,
         NONE
