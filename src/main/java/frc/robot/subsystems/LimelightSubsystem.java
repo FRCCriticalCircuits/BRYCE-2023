@@ -6,6 +6,9 @@ import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -68,7 +71,7 @@ public class LimelightSubsystem extends SubsystemBase {
             case 6:
             case 7:
             case 8:
-                height = Constants.PhysicalConstants.LL_CUBE_GOAL_HEIGHT;
+                height = Constants.PhysicalConstants.LL_PICKUP_GOAL_HEIGHT;
                 Target = TargetType.GOAL;
             case 4:
             case 5:
