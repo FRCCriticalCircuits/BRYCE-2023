@@ -56,39 +56,39 @@ public final class Constants {
     public static final double FRONT_LEFT_FORWARD_PID0_D = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.00011;
 
-    public static final double FRONT_LEFT_ROTATION_PID0_P = 0.00201;
+    public static final double FRONT_LEFT_ROTATION_PID0_P = 0.003405;
     public static final double FRONT_LEFT_ROTATION_PID0_I = 0;
     public static final double FRONT_LEFT_ROTATION_PID0_D = 0;
-    public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.0001;
+    public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.00001;
 
     public static final double FRONT_RIGHT_FORWARD_PID0_P = 0.001;
     public static final double FRONT_RIGHT_FORWARD_PID0_I = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_D = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.00011;
 
-    public static final double FRONT_RIGHT_ROTATION_PID0_P = 0.00201;
+    public static final double FRONT_RIGHT_ROTATION_PID0_P = 0.003405;
     public static final double FRONT_RIGHT_ROTATION_PID0_I = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_D = 0;
-    public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.0001;
+    public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.00001;
 
     public static final double REAR_LEFT_FORWARD_PID0_P = 0.001;
     public static final double REAR_LEFT_FORWARD_PID0_I = 0;
     public static final double REAR_LEFT_FORWARD_PID0_D = 0;
     public static final double REAR_LEFT_FORWARD_PID0_FF = 0.00011;
 
-    public static final double REAR_LEFT_ROTATION_PID0_P = 0.00201;
+    public static final double REAR_LEFT_ROTATION_PID0_P = 0.003405;
     public static final double REAR_LEFT_ROTATION_PID0_I = 0;
     public static final double REAR_LEFT_ROTATION_PID0_D = 0;
-    public static final double REAR_LEFT_ROTATION_PID0_FF = 0.0001;
+    public static final double REAR_LEFT_ROTATION_PID0_FF = 0.00001;
 
     public static final double REAR_RIGHT_FORWARD_PID0_P = 0.001;
     public static final double REAR_RIGHT_FORWARD_PID0_I = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_D = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.00011;
 
-    public static final double REAR_RIGHT_ROTATION_PID0_P = 0.00201;
+    public static final double REAR_RIGHT_ROTATION_PID0_P = 0.003405;
     public static final double REAR_RIGHT_ROTATION_PID0_I = 0;
     public static final double REAR_RIGHT_ROTATION_PID0_D = 0;
-    public static final double REAR_RIGHT_ROTATION_PID0_FF = 0.0001;
+    public static final double REAR_RIGHT_ROTATION_PID0_FF = 0.00001;
   }
 }
