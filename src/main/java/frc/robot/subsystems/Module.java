@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,6 +23,8 @@ public class Module extends SubsystemBase{
     private RelativeEncoder forwardEncoder, turnEncoder;
     private int forward_ID, turn_ID;
     private double gain;
+
+    
 
     public Module(int forward_ID, int turn_ID) {
         this.forward_ID = forward_ID;
@@ -69,7 +73,8 @@ public class Module extends SubsystemBase{
         turnPID.setI(i, slotID);
         turnPID.setD(d, slotID);
         turnPID.setFF(f, slotID);
-        turnPID.setOutputRange(-90, 90);
+        turnPID.setIZone(1);
+        turnPID.setOutputRange(-180, 180);
 
         turn.burnFlash();
     }

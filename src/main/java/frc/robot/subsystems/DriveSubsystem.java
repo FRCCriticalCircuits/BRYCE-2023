@@ -11,7 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.AnalogEncoder;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
@@ -144,6 +143,15 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public void reset(){
+    frontLeft.resetEncoderForward();
+    frontRight.resetEncoderForward();
+    rearLeft.resetEncoderForward();
+    rearRight.resetEncoderForward();
+    odometry.resetPosition(getHeading(), modulePositions, new Pose2d());
+    gyro.reset();
+  }
+
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
@@ -168,6 +176,28 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FRONT RIGHT DISTANCE", frontRight.getDistance());
     SmartDashboard.putNumber("REAR LEFT DISTANCE", rearLeft.getDistance());
     SmartDashboard.putNumber("REAR RIGHT DISTANCE", rearRight.getDistance());
+  }
+
+  public void OutputModuleInfo(SwerveModuleState[] states) {
+    SmartDashboard.putNumber("FRONT LEFT ANGLE", frontLeft.getAngle());
+    SmartDashboard.putNumber("FRONT RIGHT ANGLE", frontRight.getAngle());
+    SmartDashboard.putNumber("REAR LEFT ANGLE", rearLeft.getAngle());
+    SmartDashboard.putNumber("REAR RIGHT ANGLE", rearRight.getAngle());
+    
+    SmartDashboard.putNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
+    SmartDashboard.putNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
+    SmartDashboard.putNumber("REAR LEFT SPEED", rearLeft.getSpeed());
+    SmartDashboard.putNumber("REAR RIGHT SPEED", rearRight.getSpeed());
+
+    SmartDashboard.putNumber("FRONT LEFT DISTANCE", frontLeft.getDistance());
+    SmartDashboard.putNumber("FRONT RIGHT DISTANCE", frontRight.getDistance());
+    SmartDashboard.putNumber("REAR LEFT DISTANCE", rearLeft.getDistance());
+    SmartDashboard.putNumber("REAR RIGHT DISTANCE", rearRight.getDistance());
+  
+    frontLeft.setState(states[0]);
+    frontRight.setState(states[1]);
+    rearLeft.setState(states[2]);
+    rearRight.setState(states[3]);
   }
 
   @Override
