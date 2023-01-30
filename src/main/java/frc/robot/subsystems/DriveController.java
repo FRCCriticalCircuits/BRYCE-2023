@@ -14,6 +14,18 @@ public class DriveController extends SubsystemBase {
         
     }
 
+    public void translate(double angle, double power) {
+        drive.frontLeft.setAngle(angle);
+        drive.frontRight.setAngle(angle);
+        drive.rearLeft.setAngle(angle);
+        drive.rearRight.setAngle(angle);
+
+        drive.frontLeft.setSpeed(power);
+        drive.frontRight.setSpeed(power);
+        drive.rearLeft.setSpeed(power);
+        drive.rearRight.setSpeed(power);
+    }
+
     @Override
     public void periodic(){}
 }
