@@ -15,7 +15,7 @@ public class PIDContollers {
         }
     }
 
-    public PIDController COMMAND_X_PID() {
+    public PIDController CRITICAL_X() {
         PIDController COMMAND_PID = new PIDController(
             1, 
             0, 
@@ -25,7 +25,7 @@ public class PIDContollers {
         return COMMAND_PID;
     }
 
-    public PIDController COMMAND_Y_PID() {
+    public PIDController CRITICAL_Y() {
         PIDController COMMAND_PID = new PIDController(
             1, 
             0,
@@ -35,7 +35,7 @@ public class PIDContollers {
         return COMMAND_PID;
     }
 
-    public PIDController THETA_PID() {
+    public PIDController CRITICAL_THETA() {
         PIDController COMMAND_PID = new PIDController(
             1, 
             0,
