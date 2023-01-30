@@ -5,13 +5,18 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.DriveWithHeading;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.DriveSubsystem;
+import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
@@ -19,8 +24,10 @@ public class RobotContainer {
 
   private SendableChooser<Command> autoChooser = new SendableChooser<Command>(); 
 
-  private final CommandJoystick m_driverController =
-      new CommandJoystick(OperatorConstants.DRIVER_GAMEPAD_ID);
+  private final GenericHID m_DRIVER_GAMEPAD = new GenericHID(Constants.OperatorConstants.DRIVER_GAMEPAD_ID);
+
+  private final CommandGenericHID m_driverController =
+      new CommandGenericHID(OperatorConstants.DRIVER_GAMEPAD_ID);
 
   public RobotContainer() {
     configureBindings();
@@ -28,9 +35,10 @@ public class RobotContainer {
     m_driveSubsystem.setDefaultCommand(
       new TeleopDrive(
         m_driveSubsystem, 
-        m_driverController.getRawAxis(0), 
-        m_driverController.getRawAxis(2), 
-        m_driverController.getRawAxis(1)
+        m_DRIVER_GAMEPAD.getRawAxis(0), 
+        m_DRIVER_GAMEPAD.getRawAxis(2), 
+        m_DRIVER_GAMEPAD.getRawAxis(1),
+        false
       )
     );
 
@@ -39,17 +47,22 @@ public class RobotContainer {
     SmartDashboard.putData("AUTO", autoChooser);
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
+  private Trigger DRIVER_X_BUTTON = new Trigger(m_driverController.button(3));
+  private Trigger DRIVER_LEFT_BUMPER = new Trigger(m_driverController.button(6));
+  private Trigger DRIVER_LEFT_TRIGGER = new Trigger(m_driverController.button(7));
+
   private void configureBindings() {
-    
+    DRIVER_X_BUTTON.toggleOnTrue(
+      new TeleopDrive(
+        m_driveSubsystem, 
+        m_DRIVER_GAMEPAD.getRawAxis(0), 
+        m_DRIVER_GAMEPAD.getRawAxis(2), 
+        m_DRIVER_GAMEPAD.getRawAxis(1), 
+        true
+      )
+    );
+
+    DRIVER_LEFT_TRIGGER.onTrue(new DriveWithHeading(m_driveSubsystem, 0));
   }
 
   public Command getAutonomousCommand() {
