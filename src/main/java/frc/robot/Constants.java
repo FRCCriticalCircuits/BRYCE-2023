@@ -1,5 +1,9 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
+
 public final class Constants {
   public static class OperatorConstants {
     public static final int DRIVER_GAMEPAD_ID = 0;
@@ -48,9 +52,22 @@ public final class Constants {
     public static final double LL_HEIGHT = 1;
     public static final double LL_CUBE_GOAL_HEIGHT = 2;
     public static final double LL_PICKUP_GOAL_HEIGHT = 4;
+
+    public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
+      new Translation2d(Units.inchesToMeters(19), Units.inchesToMeters(11)),
+      new Translation2d(-Units.inchesToMeters(19), Units.inchesToMeters(11)),
+      new Translation2d(Units.inchesToMeters(19), -Units.inchesToMeters(11)),
+      new Translation2d(-Units.inchesToMeters(19), -Units.inchesToMeters(11))
+    );
+
   }
 
   public static class PIDConstants {
+
+    // -------------------------
+    // DRIVE PID's
+    // -------------------------
+
     public static final double FRONT_LEFT_FORWARD_PID0_P = 0.001;
     public static final double FRONT_LEFT_FORWARD_PID0_I = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_D = 0;
@@ -90,5 +107,35 @@ public final class Constants {
     public static final double REAR_RIGHT_ROTATION_PID0_I = 0;
     public static final double REAR_RIGHT_ROTATION_PID0_D = 0;
     public static final double REAR_RIGHT_ROTATION_PID0_FF = 0.00001;
+
+    // ------------------
+
+    // ------------------------
+    //  OTHER MOTOR PID's
+    // ------------------------
+
+    public static final double WINDOW_PID0_P = 1;
+    public static final double WINDOW_PID0_I = 0;
+    public static final double WINDOW_PID0_D = 0;
+    public static final double WINDOW_PID0_F = 0;
+
+    public static final double FLYWHEEL_PID0_P = 1;
+    public static final double FLYWHEEL_PID0_I = 0;
+    public static final double FLYWHEEL_PID0_D = 0;
+    public static final double FLYWHEEL_PID0_F = 0;
+
+    // ------------------------
+
+    public static final double CRITICAL_X_PID0_P = 1;
+    public static final double CRITICAL_X_PID0_I = 0;
+    public static final double CRITICAL_X_PID0_D = 0;
+
+    public static final double CRITICAL_y_PID0_P = 1;
+    public static final double CRITICAL_y_PID0_I = 0;
+    public static final double CRITICAL_y_PID0_D = 0;
+
+    public static final double CRITICAL_THETA_PID0_P = 1;
+    public static final double CRITICAL_THETA_PID0_I = 0;
+    public static final double CRITICAL_THETA_PID0_D = 0;
   }
 }
