@@ -124,15 +124,20 @@ public final class Constants {
     public static final double FLYWHEEL_PID0_D = 0;
     public static final double FLYWHEEL_PID0_F = 0;
 
+    public static final double ARM_PID0_P = 1;
+    public static final double ARM_PID0_I = 0;
+    public static final double ARM_PID0_D = 0;
+    public static final double ARM_PID0_F = 0;
+
     // ------------------------
 
     public static final double CRITICAL_X_PID0_P = 1;
     public static final double CRITICAL_X_PID0_I = 0;
     public static final double CRITICAL_X_PID0_D = 0;
 
-    public static final double CRITICAL_y_PID0_P = 1;
-    public static final double CRITICAL_y_PID0_I = 0;
-    public static final double CRITICAL_y_PID0_D = 0;
+    public static final double CRITICAL_Y_PID0_P = 1;
+    public static final double CRITICAL_Y_PID0_I = 0;
+    public static final double CRITICAL_Y_PID0_D = 0;
 
     public static final double CRITICAL_THETA_PID0_P = 1;
     public static final double CRITICAL_THETA_PID0_I = 0;
