@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Triggers.AxisTrigger;
 import frc.robot.commands.DriveWithHeading;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.DriveSubsystem;
@@ -25,9 +26,15 @@ public class RobotContainer {
   private SendableChooser<Command> autoChooser = new SendableChooser<Command>(); 
 
   private final GenericHID m_DRIVER_GAMEPAD = new GenericHID(Constants.OperatorConstants.DRIVER_GAMEPAD_ID);
-
+  
   private final CommandGenericHID m_driverController =
-      new CommandGenericHID(OperatorConstants.DRIVER_GAMEPAD_ID);
+    new CommandGenericHID(Constants.OperatorConstants.DRIVER_GAMEPAD_ID
+  );
+
+  private final CommandGenericHID m_operatorController = 
+    new CommandGenericHID(Constants.OperatorConstants.OPERATOR_GAMEPAD_ID
+  );
+
 
   public RobotContainer() {
     configureBindings();
@@ -50,6 +57,7 @@ public class RobotContainer {
   private Trigger DRIVER_X_BUTTON = new Trigger(m_driverController.button(3));
   private Trigger DRIVER_LEFT_BUMPER = new Trigger(m_driverController.button(6));
   private Trigger DRIVER_LEFT_TRIGGER = new Trigger(m_driverController.button(7));
+  private AxisTrigger OPERATOR_X_STICK = new AxisTrigger(m_operatorController.getRawAxis(0));
 
   private void configureBindings() {
     DRIVER_X_BUTTON.toggleOnTrue(
