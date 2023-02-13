@@ -27,15 +27,22 @@ public final class Constants {
   public static class MotorIDs {
     public static final int FRONT_LEFT_FORWARD_ID = 1;
     public static final int FRONT_LEFT_ROTATION_ID = 2;
-    
+    public static final int FRONT_LEFT_CANCODER_ID = 3;
+
     public static final int FRONT_RIGHT_FORWARD_ID = 4;
     public static final int FRONT_RIGHT_ROTATION_ID = 5;
+    public static final int FRONT_RIGHT_CANCODER_ID = 6;
 
     public static final int REAR_LEFT_FORWARD_ID = 7;
     public static final int REAR_LEFT_ROTATION_ID = 8;
+    public static final int REAR_LEFT_CANCODER_ID = 9;
 
     public static final int REAR_RIGHT_FORWARD_ID = 10;
     public static final int REAR_RIGHT_ROTATION_ID = 11;
+    public static final int REAR_RIGHT_CANCODER_ID = 12;
+
+    public static final int RIGHT_INTAKE_ID = 20;
+    public static final int LEFT_INTAKE_ID = 21;
   }
 
   public static class PhysicalConstants {
@@ -48,16 +55,20 @@ public final class Constants {
     public static final double SIDE_LENGTH = 38.0;
     public static final double SIDE_WIDTH = 22.0;
     public static final double SIDE_TO_CORNER = 21.9544984001;
+    public static final double TRACK_WIDTH = 16.5;
+    public static final double TRACK_LENGTH = 32.5;
+    public static final double TRACK_RADIUS = 18.2242969686;
+
 
     public static final double LL_HEIGHT = 1;
     public static final double LL_CUBE_GOAL_HEIGHT = 2;
     public static final double LL_PICKUP_GOAL_HEIGHT = 4;
 
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
-      new Translation2d(Units.inchesToMeters(19), Units.inchesToMeters(11)),
-      new Translation2d(-Units.inchesToMeters(19), Units.inchesToMeters(11)),
-      new Translation2d(Units.inchesToMeters(19), -Units.inchesToMeters(11)),
-      new Translation2d(-Units.inchesToMeters(19), -Units.inchesToMeters(11))
+      new Translation2d(Units.inchesToMeters(32.5/2), Units.inchesToMeters(16.5/2)),
+      new Translation2d(Units.inchesToMeters(32.5/2), -Units.inchesToMeters(16.5/2)),
+      new Translation2d(-Units.inchesToMeters(32.5/2), Units.inchesToMeters(16.5/2)),
+      new Translation2d(-Units.inchesToMeters(32.5/2), -Units.inchesToMeters(16.5/2))
     );
 
   }
@@ -86,7 +97,7 @@ public final class Constants {
     public static final double FRONT_RIGHT_ROTATION_PID0_P = 0.003405;
     public static final double FRONT_RIGHT_ROTATION_PID0_I = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_D = 0;
-    public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.00001;
+    public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.00002;
 
     public static final double REAR_LEFT_FORWARD_PID0_P = 0.001;
     public static final double REAR_LEFT_FORWARD_PID0_I = 0;
