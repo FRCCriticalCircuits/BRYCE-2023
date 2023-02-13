@@ -23,39 +23,35 @@ public class DriveSubsystem extends SubsystemBase {
 
     public Module frontLeft = new Module(
       Constants.MotorIDs.FRONT_LEFT_FORWARD_ID,
-      Constants.MotorIDs.FRONT_LEFT_ROTATION_ID
+      Constants.MotorIDs.FRONT_LEFT_ROTATION_ID,
+      Constants.MotorIDs.FRONT_LEFT_CANCODER_ID,
+      0
     );
 
     public Module frontRight = new Module(
         Constants.MotorIDs.FRONT_RIGHT_FORWARD_ID, 
-        Constants.MotorIDs.FRONT_RIGHT_ROTATION_ID
+        Constants.MotorIDs.FRONT_RIGHT_ROTATION_ID,
+        Constants.MotorIDs.FRONT_RIGHT_CANCODER_ID,
+        0
     );
 
     public Module rearLeft = new Module(
         Constants.MotorIDs.REAR_LEFT_FORWARD_ID, 
-        Constants.MotorIDs.REAR_LEFT_ROTATION_ID
+        Constants.MotorIDs.REAR_LEFT_ROTATION_ID,
+        Constants.MotorIDs.REAR_LEFT_CANCODER_ID,
+        0
     );
 
     public Module rearRight = new Module(
         Constants.MotorIDs.REAR_RIGHT_FORWARD_ID, 
-        Constants.MotorIDs.REAR_RIGHT_ROTATION_ID
+        Constants.MotorIDs.REAR_RIGHT_ROTATION_ID,
+        Constants.MotorIDs.REAR_RIGHT_CANCODER_ID,
+        0
     );
 
     public Joystick driverJoystick = new Joystick(0);
 
     private AnalogGyro gyro = new AnalogGyro(0);
-
-    private Translation2d frontleftLocation = new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2));
-    private Translation2d frontrightLocation = new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -1 * Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2));
-    private Translation2d rearleftLocation = new Translation2d(-1 * Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2));
-    private Translation2d rearrightLocation = new Translation2d(-1 * Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -1 * Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2));
-
-    private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-      frontleftLocation, 
-      frontrightLocation, 
-      rearleftLocation, 
-      rearrightLocation
-    );
 
     private SwerveModulePosition[] modulePositions = {
       new SwerveModulePosition(frontLeft.getDistance(), frontLeft.getRotation()),
@@ -64,9 +60,9 @@ public class DriveSubsystem extends SubsystemBase {
       new SwerveModulePosition(rearRight.getDistance(), rearRight.getRotation())
     };
 
-    private SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, getHeading(), modulePositions);
+    private SwerveDriveOdometry odometry = new SwerveDriveOdometry(Constants.PhysicalConstants.KINEMATICS, getHeading(), modulePositions);
 
-    private SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(kinematics, getHeading(), modulePositions, new Pose2d());
+    private SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(Constants.PhysicalConstants.KINEMATICS, getHeading(), modulePositions, new Pose2d());
     
   public DriveSubsystem() {
     OutputModuleInfo();
@@ -143,23 +139,39 @@ public class DriveSubsystem extends SubsystemBase {
     );
   }
 
+  public void stop() {
+    frontLeft.stopMotors();
+    frontRight.stopMotors();
+    rearLeft.stopMotors();
+    rearRight.stopMotors();
+  }
+
   public void reset(){
     frontLeft.resetEncoderForward();
     frontRight.resetEncoderForward();
     rearLeft.resetEncoderForward();
     rearRight.resetEncoderForward();
     odometry.resetPosition(getHeading(), modulePositions, new Pose2d());
-    gyro.reset();
+    //gyro.reset();
   }
 
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(gyro.getAngle());
   }
 
+  /*
+    RETURNS THE POSE OF THE ROBOT
+    
+    @return pose
+  */
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
 
+  public SwerveModulePosition[] getSwerveModulePositions() {
+    
+    return null;
+  }
 
   public void OutputModuleInfo() {
     SmartDashboard.putNumber("FRONT LEFT ANGLE", frontLeft.getAngle());
@@ -198,6 +210,13 @@ public class DriveSubsystem extends SubsystemBase {
     frontRight.setState(states[1]);
     rearLeft.setState(states[2]);
     rearRight.setState(states[3]);
+  }
+
+  public void setStates(SwerveModuleState[] state) {
+    frontLeft.setState(state[0]);
+    frontRight.setState(state[1]);
+    rearLeft.setState(state[2]);
+    rearRight.setState(state[3]);
   }
 
   @Override
