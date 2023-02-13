@@ -18,6 +18,13 @@ public class RunIntake extends CommandBase {
     }
 
     @Override
+    public void end(boolean interupted) {
+        if(interupted){
+            intake.stopIntake();
+        }
+    }
+
+    @Override
     public boolean isFinished(){
         return false;
     }

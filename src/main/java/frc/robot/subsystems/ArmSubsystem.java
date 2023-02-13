@@ -46,7 +46,7 @@ public class ArmSubsystem extends SubsystemBase {
         window_PID.setReference(angle, ControlType.kPosition);
     }
 
-    public void moveArm(double forward){
+    public void set(double forward){
         forward /= 0.2;
 
         window.set(forward);
