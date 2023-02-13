@@ -4,6 +4,7 @@ import java.security.CodeSource;
 
 import javax.swing.text.StyleContext.SmallAttributeSet;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -81,7 +82,7 @@ public class LimelightSubsystem extends SubsystemBase {
                 Target = TargetType.NONE;
         }
 
-        distance = (height + Constants.PhysicalConstants.LL_HEIGHT) / Math.tan(getYOffset());
+        distance = (height + Constants.PhysicalConstants.LL_HEIGHT) / (Math.tan(Units.degreesToRadians(getYOffset())) * Math.cos(Units.degreesToRadians(getXOffset())));
 
         return distance;
     }
