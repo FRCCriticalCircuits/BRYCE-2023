@@ -23,14 +23,15 @@ public class Module extends SubsystemBase{
     private RelativeEncoder forwardEncoder, turnEncoder;
     private int forward_ID, turn_ID, cancoder_ID;
     private double gain, angleOffset;
-
+    private boolean EncoderReversed;
     
 
-    public Module(int forward_ID, int turn_ID, int cancoder_ID, double angleOffset) {
+    public Module(int forward_ID, int turn_ID, int cancoder_ID, double angleOffset, boolean EncoderReversed) {
         this.forward_ID = forward_ID;
         this.turn_ID = turn_ID;
         this.cancoder_ID = cancoder_ID;
         this.angleOffset = angleOffset;
+        this.EncoderReversed = EncoderReversed;
 
         setup();
     }
@@ -48,16 +49,20 @@ public class Module extends SubsystemBase{
         forwardEncoder = forward.getEncoder();
         turnEncoder = turn.getEncoder();
 
+        canCoder.configSensorDirection(EncoderReversed);
+        canCoder.configMagnetOffset(angleOffset);
+
         turnEncoder.setPositionConversionFactor(((1 / Constants.PhysicalConstants.ROTATION_GEAR_RATIO) * 360) % 360);
         forwardEncoder.setPositionConversionFactor((1 / Constants.PhysicalConstants.DRIVE_GEAR_RATIO) * Math.PI * 4);
+        forwardEncoder.setVelocityConversionFactor((1 / Constants.PhysicalConstants.DRIVE_GEAR_RATIO) * Math.PI * 4);
         canCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
         forwardPID.setFeedbackDevice(forwardEncoder);
         turnPID.setFeedbackDevice(turnEncoder);
 
         forwardEncoder.setPosition(0.0);
-        turnEncoder.setPosition(0.0);
-        canCoder.setPosition(0);
+        canCoder.setPositionToAbsolute();
+        turnEncoder.setPosition(canCoder.getAbsolutePosition());
 
         forward.burnFlash();
         turn.burnFlash();
@@ -68,7 +73,6 @@ public class Module extends SubsystemBase{
         forwardPID.setI(i, slotID);
         forwardPID.setD(d, slotID);
         forwardPID.setFF(f, slotID);
-        forwardPID.setOutputRange(-1, 1);
 
         forward.burnFlash();
     }    
@@ -104,17 +108,8 @@ public class Module extends SubsystemBase{
         turn.setVoltage(0);
     }
 
-    public void resetEncoderForward() {
+    public void reset(){
         forwardEncoder.setPosition(0);
-    }
-
-    public void resetEncoderTurn() {
-        turnEncoder.setPosition(0);
-    }
-
-    public void resetEncoders(){
-        forwardEncoder.setPosition(0);
-        turnEncoder.setPosition(0);
     }
 
     public double closestAngle(double angle) {
@@ -147,11 +142,12 @@ public class Module extends SubsystemBase{
     }
 
     public void setState(SwerveModuleState state){
-        double velocity = state.speedMetersPerSecond * 60;
+        SwerveModuleState.optimize(state, getRotation());
+        double velocity = state.speedMetersPerSecond;
         double angle = state.angle.getDegrees();
 
-        setAngle(angle);
-        forwardPID.setReference(velocity, ControlType.kVelocity);
+        setAngle(angle + 180);
+        forward.set(gain * velocity / 12);
     }
 
     public void setGain(double gain){
@@ -175,10 +171,6 @@ public class Module extends SubsystemBase{
     public double getAbsoluteAngle() {
         return canCoder.getAbsolutePosition();
     }
-
-    //public double getAbsoluteAngle() {
-    
-    //}
 
     public Rotation2d getRotation() {
         return Rotation2d.fromDegrees(getAngle());

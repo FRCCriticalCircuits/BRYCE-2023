@@ -5,16 +5,12 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,28 +22,32 @@ public class DriveSubsystem extends SubsystemBase {
       Constants.MotorIDs.FRONT_LEFT_FORWARD_ID,
       Constants.MotorIDs.FRONT_LEFT_ROTATION_ID,
       Constants.MotorIDs.FRONT_LEFT_CANCODER_ID,
-      57.7
+      57.7,
+      false
     );
 
     public Module frontRight = new Module(
         Constants.MotorIDs.FRONT_RIGHT_FORWARD_ID, 
         Constants.MotorIDs.FRONT_RIGHT_ROTATION_ID,
         Constants.MotorIDs.FRONT_RIGHT_CANCODER_ID,
-        3.6
+        3.6,
+        false
     );
 
     public Module rearLeft = new Module(
         Constants.MotorIDs.REAR_LEFT_FORWARD_ID, 
         Constants.MotorIDs.REAR_LEFT_ROTATION_ID,
         Constants.MotorIDs.REAR_LEFT_CANCODER_ID,
-        -67
+        -67,
+        false
     );
 
     public Module rearRight = new Module(
         Constants.MotorIDs.REAR_RIGHT_FORWARD_ID, 
         Constants.MotorIDs.REAR_RIGHT_ROTATION_ID,
         Constants.MotorIDs.REAR_RIGHT_CANCODER_ID,
-        158.3
+        158.3,
+        false
     );
 
     public Joystick driverJoystick = new Joystick(0);
@@ -150,10 +150,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void reset(){
-    frontLeft.resetEncoderForward();
-    frontRight.resetEncoderForward();
-    rearLeft.resetEncoderForward();
-    rearRight.resetEncoderForward();
+    frontLeft.reset();
+    frontRight.reset();
+    rearLeft.reset();
+    rearRight.reset();
     odometry.resetPosition(getHeading(), modulePositions, new Pose2d());
     //gyro.reset();
   }
