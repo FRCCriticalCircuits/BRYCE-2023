@@ -43,12 +43,7 @@ public class DriveStraight {
                     new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2))
                 )
             ).addConstraint(new SwerveDriveKinematicsConstraint(
-                new SwerveDriveKinematics(
-                    new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                    new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                    new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                    new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2))
-                ), 
+                Constants.PhysicalConstants.KINEMATICS, 
                 10)
             ).setEndVelocity(0);
 
@@ -61,12 +56,8 @@ public class DriveStraight {
         
         return new SequentialCommandGroup(
             new InstantCommand(drive::reset, drive),
-            new SwerveControllerCommand(route, drive::getPose, new SwerveDriveKinematics(
-                new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2))
-                ), 
+            new SwerveControllerCommand(route, drive::getPose, 
+                Constants.PhysicalConstants.KINEMATICS, 
                 new HolonomicDriveController(
                     pidContollers.CRITICAL_X(), 
                     pidContollers.CRITICAL_Y(), 

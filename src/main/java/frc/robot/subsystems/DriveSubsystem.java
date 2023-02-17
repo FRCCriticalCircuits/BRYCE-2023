@@ -6,6 +6,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -25,31 +26,33 @@ public class DriveSubsystem extends SubsystemBase {
       Constants.MotorIDs.FRONT_LEFT_FORWARD_ID,
       Constants.MotorIDs.FRONT_LEFT_ROTATION_ID,
       Constants.MotorIDs.FRONT_LEFT_CANCODER_ID,
-      0
+      57.7
     );
 
     public Module frontRight = new Module(
         Constants.MotorIDs.FRONT_RIGHT_FORWARD_ID, 
         Constants.MotorIDs.FRONT_RIGHT_ROTATION_ID,
         Constants.MotorIDs.FRONT_RIGHT_CANCODER_ID,
-        0
+        3.6
     );
 
     public Module rearLeft = new Module(
         Constants.MotorIDs.REAR_LEFT_FORWARD_ID, 
         Constants.MotorIDs.REAR_LEFT_ROTATION_ID,
         Constants.MotorIDs.REAR_LEFT_CANCODER_ID,
-        0
+        -67
     );
 
     public Module rearRight = new Module(
         Constants.MotorIDs.REAR_RIGHT_FORWARD_ID, 
         Constants.MotorIDs.REAR_RIGHT_ROTATION_ID,
         Constants.MotorIDs.REAR_RIGHT_CANCODER_ID,
-        0
+        158.3
     );
 
     public Joystick driverJoystick = new Joystick(0);
+
+    private ChassisSpeeds sChassisSpeeds = new ChassisSpeeds();
 
     private AnalogGyro gyro = new AnalogGyro(0);
 
@@ -179,6 +182,11 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("REAR LEFT ANGLE", rearLeft.getAngle());
     SmartDashboard.putNumber("REAR RIGHT ANGLE", rearRight.getAngle());
     
+    SmartDashboard.putNumber("FRONT LEFT ABSOLUTE", frontLeft.getAbsoluteAngle());
+    SmartDashboard.putNumber("FRONT RIGHT ABSOLUTE", frontRight.getAbsoluteAngle());
+    SmartDashboard.putNumber("REAR LEFT ABSOLUTE", rearLeft.getAbsoluteAngle());
+    SmartDashboard.putNumber("REAR RIGHT ABSOLUTE", rearRight.getAbsoluteAngle());
+
     SmartDashboard.putNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
     SmartDashboard.putNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
     SmartDashboard.putNumber("REAR LEFT SPEED", rearLeft.getSpeed());
@@ -195,6 +203,11 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("FRONT RIGHT ANGLE", frontRight.getAngle());
     SmartDashboard.putNumber("REAR LEFT ANGLE", rearLeft.getAngle());
     SmartDashboard.putNumber("REAR RIGHT ANGLE", rearRight.getAngle());
+
+    SmartDashboard.putNumber("FRONT LEFT ABSOLUTE", frontLeft.getAbsoluteAngle());
+    SmartDashboard.putNumber("FRONT RIGHT ABSOLUTE", frontRight.getAbsoluteAngle());
+    SmartDashboard.putNumber("REAR LEFT ABSOLUTE", rearLeft.getAbsoluteAngle());
+    SmartDashboard.putNumber("REAR RIGHT ABSOLUTE", rearRight.getAbsoluteAngle());
     
     SmartDashboard.putNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
     SmartDashboard.putNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
@@ -213,10 +226,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void setStates(SwerveModuleState[] state) {
-    frontLeft.setState(state[0]);
-    frontRight.setState(state[1]);
-    rearLeft.setState(state[2]);
-    rearRight.setState(state[3]);
+    frontLeft.setState(state[2]);
+    frontRight.setState(state[3]);
+    rearLeft.setState(state[0]);
+    rearRight.setState(state[1]);
   }
 
   @Override

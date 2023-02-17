@@ -53,8 +53,8 @@ public class LimelightSubsystem extends SubsystemBase {
         return table.getEntry("ta").getDouble(0);
     }
 
-    public int getId() {
-        return (int) table.getEntry("tid").getInteger(0);
+    public Double[] getId() {
+        return table.getEntry("tid").getDoubleArray(new Double[6]);
     }
 
     public TargetType getTarget(){
@@ -89,7 +89,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        SmartDashboard.putNumber("TARGET DISTANCE", getDistanceToTarget(getId()));
+        SmartDashboard.putNumberArray("ID", getId());
         SmartDashboard.putBoolean("IS TARGET", isTarget());
         SmartDashboard.putNumber("PIPELINE", getArea());
     }

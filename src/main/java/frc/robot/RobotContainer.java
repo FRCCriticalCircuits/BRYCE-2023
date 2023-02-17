@@ -24,20 +24,20 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
-  private final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
-  private final DriveController m_driveController = new DriveController(m_driveSubsystem);
+  private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
+  private DriveController m_driveController = new DriveController(m_driveSubsystem);
 
-  private final Intake intake = new Intake();
+  private Intake intake = new Intake();
 
   private SendableChooser<Command> autoChooser = new SendableChooser<Command>(); 
 
-  private final GenericHID m_DRIVER_GAMEPAD = new GenericHID(Constants.OperatorConstants.DRIVER_GAMEPAD_ID);
+  private GenericHID m_DRIVER_GAMEPAD = new GenericHID(Constants.OperatorConstants.DRIVER_GAMEPAD_ID);
   
-  private final CommandGenericHID m_driverController =
+  private CommandGenericHID m_driverController =
     new CommandGenericHID(Constants.OperatorConstants.DRIVER_GAMEPAD_ID
   );
 
-  private final CommandGenericHID m_operatorController = 
+  private CommandGenericHID m_operatorController = 
     new CommandGenericHID(Constants.OperatorConstants.OPERATOR_GAMEPAD_ID
   );
 
