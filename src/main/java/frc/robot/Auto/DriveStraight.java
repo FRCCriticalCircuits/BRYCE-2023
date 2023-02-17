@@ -32,9 +32,10 @@ public class DriveStraight {
     }
 
     public Command driveStaight() {
+        new InstantCommand(drive::reset);
 
         TrajectoryConfig config = new TrajectoryConfig(
-            2, 
+            2.5, 
             1).setKinematics(
                 new SwerveDriveKinematics(
                     new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
@@ -51,9 +52,10 @@ public class DriveStraight {
         Trajectory route = TrajectoryGenerator.generateTrajectory(
             new Pose2d(0, 0, new Rotation2d(0)), 
             List.of(), 
-            new Pose2d(3, 0, new Rotation2d(0)), config
+            new Pose2d(0, 3, new Rotation2d(0)), 
+            config
         );
-        
+    
         return new SequentialCommandGroup(
             new InstantCommand(drive::reset, drive),
             new SwerveControllerCommand(route, drive::getPose, 
