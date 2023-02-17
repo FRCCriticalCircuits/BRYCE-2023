@@ -26,13 +26,17 @@ public class DriveController extends SubsystemBase {
     }
 
     public void drive(double x1, double y, double x2, boolean fieldOrientedDrive) {
-        new ChassisSpeeds();
+        x1 *= -12;
+        x2 *= 8;
+        y *= 12;
+
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(
             !fieldOrientedDrive 
-            ? new ChassisSpeeds(x1, y, x2) : 
-            ChassisSpeeds.fromFieldRelativeSpeeds(x1, y, x2, drive.getHeading())
+            ? new ChassisSpeeds(y, x1, x2) : 
+            ChassisSpeeds.fromFieldRelativeSpeeds(y, x1, x2, drive.getHeading())
         );
 
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, 12);
         drive.setStates(moduleStates);
     }
 
