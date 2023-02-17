@@ -43,6 +43,9 @@ public final class Constants {
 
     public static final int RIGHT_INTAKE_ID = 20;
     public static final int LEFT_INTAKE_ID = 21;
+
+    public static final int FLYWHEEL_TOP_ID = 30;
+    public static final int FLYWHEEL_BUTTOM_ID = 31;
   }
 
   public static class PhysicalConstants {
@@ -55,8 +58,8 @@ public final class Constants {
     public static final double SIDE_LENGTH = 38.0;
     public static final double SIDE_WIDTH = 22.0;
     public static final double SIDE_TO_CORNER = 21.9544984001;
-    public static final double TRACK_WIDTH = 16.5;
-    public static final double TRACK_LENGTH = 32.5;
+    public static final double TRACK_WIDTH = Units.inchesToMeters(20);
+    public static final double TRACK_LENGTH = Units.inchesToMeters(36);
     public static final double TRACK_RADIUS = 18.2242969686;
 
 
@@ -65,10 +68,10 @@ public final class Constants {
     public static final double LL_PICKUP_GOAL_HEIGHT = 4;
 
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
-      new Translation2d(Units.inchesToMeters(32.5/2), Units.inchesToMeters(16.5/2)),
-      new Translation2d(Units.inchesToMeters(32.5/2), -Units.inchesToMeters(16.5/2)),
-      new Translation2d(-Units.inchesToMeters(32.5/2), Units.inchesToMeters(16.5/2)),
-      new Translation2d(-Units.inchesToMeters(32.5/2), -Units.inchesToMeters(16.5/2))
+      new Translation2d(TRACK_LENGTH/2, TRACK_WIDTH/2),
+      new Translation2d(TRACK_LENGTH/2, -TRACK_WIDTH/2),
+      new Translation2d(-TRACK_LENGTH/2, TRACK_WIDTH/2),
+      new Translation2d(-TRACK_LENGTH/2, -TRACK_WIDTH/2)
     );
 
   }
@@ -79,7 +82,7 @@ public final class Constants {
     // DRIVE PID's
     // -------------------------
 
-    public static final double FRONT_LEFT_FORWARD_PID0_P = 0.001;
+    public static final double FRONT_LEFT_FORWARD_PID0_P = 0.01;
     public static final double FRONT_LEFT_FORWARD_PID0_I = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_D = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.00011;
@@ -89,7 +92,7 @@ public final class Constants {
     public static final double FRONT_LEFT_ROTATION_PID0_D = 0;
     public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.00001;
 
-    public static final double FRONT_RIGHT_FORWARD_PID0_P = 0.001;
+    public static final double FRONT_RIGHT_FORWARD_PID0_P = 0.01;
     public static final double FRONT_RIGHT_FORWARD_PID0_I = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_D = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.00011;
@@ -99,7 +102,7 @@ public final class Constants {
     public static final double FRONT_RIGHT_ROTATION_PID0_D = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.00002;
 
-    public static final double REAR_LEFT_FORWARD_PID0_P = 0.001;
+    public static final double REAR_LEFT_FORWARD_PID0_P = 0.01;
     public static final double REAR_LEFT_FORWARD_PID0_I = 0;
     public static final double REAR_LEFT_FORWARD_PID0_D = 0;
     public static final double REAR_LEFT_FORWARD_PID0_FF = 0.00011;
@@ -109,7 +112,7 @@ public final class Constants {
     public static final double REAR_LEFT_ROTATION_PID0_D = 0;
     public static final double REAR_LEFT_ROTATION_PID0_FF = 0.00001;
 
-    public static final double REAR_RIGHT_FORWARD_PID0_P = 0.001;
+    public static final double REAR_RIGHT_FORWARD_PID0_P = 0.01;
     public static final double REAR_RIGHT_FORWARD_PID0_I = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_D = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.00011;
@@ -120,6 +123,16 @@ public final class Constants {
     public static final double REAR_RIGHT_ROTATION_PID0_FF = 0.00001;
 
     // ------------------
+
+    // ------------------
+    // INTAKE PID's
+    // ------------------
+
+    public static final double INTAKE_PID0_P = 0;
+    public static final double INTAKE_PID0_I = 0;
+    public static final double INTAKE_PID0_D = 0;
+    public static final double INTAKE_PID0_F = 0;
+    public static final double INTAKE_ARB_FF = 0;
 
     // ------------------------
     //  OTHER MOTOR PID's
