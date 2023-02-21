@@ -1,32 +1,43 @@
 package frc.robot.commands;
 
+import java.lang.reflect.InaccessibleObjectException;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.Intake;
 
 public class RunIntake extends CommandBase {
     private Intake intake;
+    private Trigger trigger;
 
-    public RunIntake(Intake intake) {
+    public RunIntake(Intake intake, Trigger trigger) {
         this.intake = intake;
+        this.trigger = trigger;
 
         addRequirements(intake);
     }
 
     @Override
     public void execute() {
-        intake.runIntake();
-    }
-
-    @Override
-    public void end(boolean interupted) {
-        if(interupted){
+        if(trigger.getAsBoolean()){
+            intake.runIntake();
+        }else{
             intake.stopIntake();
         }
     }
 
     @Override
+    public void end(boolean interupted) {}
+
+    @Override
     public boolean isFinished(){
-        return false;
+        if(trigger.getAsBoolean()){
+            return false;
+        }else{
+            return true;
+        }
     }
 
 }
