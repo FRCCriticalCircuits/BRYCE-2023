@@ -26,9 +26,9 @@ public class DriveController extends SubsystemBase {
     }
 
     public void drive(double x1, double y, double x2, boolean fieldOrientedDrive) {
-        x1 *= -12;
+        x1 *= 12;
         x2 *= 8;
-        y *= 12;
+        y *= -12;
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(
             !fieldOrientedDrive 

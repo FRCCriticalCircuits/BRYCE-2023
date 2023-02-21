@@ -32,17 +32,11 @@ public class DriveStraight {
     }
 
     public Command driveStaight() {
-        new InstantCommand(drive::reset);
 
         TrajectoryConfig config = new TrajectoryConfig(
             2.5, 
             1).setKinematics(
-                new SwerveDriveKinematics(
-                    new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                    new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                    new Translation2d(Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2)),
-                    new Translation2d(-Units.inchesToMeters(Constants.PhysicalConstants.SIDE_WIDTH / 2), -Units.inchesToMeters(Constants.PhysicalConstants.SIDE_LENGTH / 2))
-                )
+            Constants.PhysicalConstants.KINEMATICS
             ).addConstraint(new SwerveDriveKinematicsConstraint(
                 Constants.PhysicalConstants.KINEMATICS, 
                 10)
@@ -67,7 +61,7 @@ public class DriveStraight {
                         pidContollers.CRITICAL_THETA().getP(),
                         pidContollers.CRITICAL_THETA().getI(),
                         pidContollers.CRITICAL_THETA().getD(),
-                        new Constraints(3, 1)
+                        new Constraints(2, 1)
                     )
                 ),
                 drive::OutputModuleInfo, 
