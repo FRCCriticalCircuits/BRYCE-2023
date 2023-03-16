@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -10,11 +11,11 @@ import frc.robot.Constants;
 
 public class DriveController extends SubsystemBase {
     private DriveSubsystem drive;
-    private double frontleftangle, frontrightangle, rearleftangle, rearrightangle;
-    private double frontleftspeed, frontrightspeed, rearleftspeed, rearrightspeed;
-    private SlewRateLimiter limiter = new SlewRateLimiter(.5);
+    private SlewRateLimiter limiter = new SlewRateLimiter(16);
     private SwerveDriveKinematics kinematics = Constants.PhysicalConstants.KINEMATICS;
     private SwerveControllerCommand driveControllerCommand;
+    private PIDController controller = new PIDController(0.004, 0, 0);
+    private double kXY = 0;
 
     public DriveController(DriveSubsystem drive) {
         this.drive = drive;
@@ -26,9 +27,11 @@ public class DriveController extends SubsystemBase {
     }
 
     public void drive(double x1, double y, double x2, boolean fieldOrientedDrive) {
-        x1 *= 12;
-        x2 *= 8;
-        y *= -12;
+        x1 *= 13;
+        x2 *= 10;
+        y *= -13;
+
+        driftCorrect(x1, y, x2);
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(
             !fieldOrientedDrive 
@@ -36,12 +39,24 @@ public class DriveController extends SubsystemBase {
             ChassisSpeeds.fromFieldRelativeSpeeds(y, x1, x2, drive.getHeading())
         );
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, 12);
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, 13);
         drive.setStates(moduleStates);
+    }
+
+    public void driftCorrect(double x, double y, double x2) {
+        double xy = Math.abs(x) + Math.abs(y);
+        double desiredheading = 0;
+
+        if(Math.abs(x2) > 0 || kXY <= 0.01){
+            desiredheading = drive.getPose().getRotation().getDegrees();
+        }else if(xy > 0){
+            x2 += controller.calculate(drive.getPose().getRotation().getDegrees(), desiredheading);
+        }
+
+        kXY = xy;
     }
 
     @Override
     public void periodic(){
-        
     }
 }
