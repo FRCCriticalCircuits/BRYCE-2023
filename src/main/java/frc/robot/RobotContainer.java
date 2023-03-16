@@ -5,39 +5,46 @@
 package frc.robot;
 
 import frc.robot.Auto.DriveStraight;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Auto.TwoCargoLeftTaxi;
+import frc.robot.Auto.TwoCargoRightTaxi;
 import frc.robot.Triggers.AxisTrigger;
-import frc.robot.commands.DriveWithHeading;
-import frc.robot.commands.Outtake;
+import frc.robot.Util.AutoPIDControllers;
+import frc.robot.commands.AlignToTarget;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunSequencer;
 import frc.robot.commands.SpinUp;
 import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.DriveController;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.PIDContollers;
+import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.Sequencer;
 import frc.robot.subsystems.ShooterSubsystem;
+
+import javax.naming.PartialResultException;
+
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
-import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
   private DriveSubsystem m_driveSubsystem = new DriveSubsystem();
   private DriveController m_driveController = new DriveController(m_driveSubsystem);
 
-  private PIDContollers contollers = new PIDContollers();
+  private AutoPIDControllers controllers = new AutoPIDControllers();
 
-  //private ShooterSubsystem shooter = new ShooterSubsystem();
+  private ShooterSubsystem shooter = new ShooterSubsystem();
+
+  private Sequencer sequencer = new Sequencer();
 
   private Intake intake = new Intake();
+
+  //private LimelightSubsystem limelight = new LimelightSubsystem();
 
   private SendableChooser<Command> autoChooser = new SendableChooser<Command>(); 
 
@@ -66,20 +73,21 @@ public class RobotContainer {
       )
     );
 
-    //shooter.setDefaultCommand(new SpinUp(shooter, 40));    
-
-    autoChooser.setDefaultOption("DRIVE STRAIGHT", new DriveStraight(m_driveSubsystem, contollers).driveStaight());
-
+    autoChooser.setDefaultOption("DRIVE STRAIGHT", new DriveStraight(m_driveSubsystem, controllers).driveStaight());
+    autoChooser.addOption("LEFT TAXI", new TwoCargoLeftTaxi(m_driveSubsystem, m_driveController, controllers).twocargolefttaxi());
+    autoChooser.addOption("RIGHT TAXI", new TwoCargoRightTaxi(m_driveSubsystem, controllers).cargorighttaxi());
 
     SmartDashboard.putData("AUTO", autoChooser);
   }
 
   private Trigger DRIVER_A_BUTTON = new Trigger(m_driverController.button(3));
   private Trigger DRIVER_X_BUTTON = new Trigger(m_driverController.button(4));
+  private Trigger DRIVER_Y_BUTTON = new Trigger(m_driverController.button(1));
   private Trigger DRIVER_LEFT_BUMPER = new Trigger(m_driverController.button(5));
   private Trigger DRIVER_RIGHT_BUMPER = new Trigger(m_driverController.button(6));
   private Trigger DRIVER_RIGHT_TRIGGER = new Trigger(m_driverController.button(8));
   private Trigger DRIVER_LEFT_TRIGGER = new Trigger(m_driverController.button(7));
+  private Trigger DRIVER_START_BUTTON = new Trigger(m_driverController.button(10));
   private AxisTrigger OPERATOR_X1_STICK = new AxisTrigger(m_operatorController.getRawAxis(0), Constants.OperatorConstants.OPERATOR_X1_THEESHOLD);
 
   private void configureBindings() {
@@ -94,11 +102,11 @@ public class RobotContainer {
       )
     );
 
-    DRIVER_LEFT_TRIGGER.onTrue(new DriveWithHeading(m_driveSubsystem, 0));
-    DRIVER_RIGHT_TRIGGER.onTrue(new RunIntake(intake, DRIVER_RIGHT_TRIGGER));
-    DRIVER_RIGHT_BUMPER.onTrue(new Outtake(intake, DRIVER_RIGHT_BUMPER));
-    DRIVER_X_BUTTON.onTrue(new InstantCommand(m_driveSubsystem::resetGyro));
-
+    //DRIVER_LEFT_TRIGGER.onTrue(new AlignToTarget(m_driveSubsystem, m_driveController, limelight, DRIVER_LEFT_TRIGGER));
+    DRIVER_RIGHT_TRIGGER.onTrue(new ParallelCommandGroup(new RunIntake(intake, false, DRIVER_RIGHT_TRIGGER), new RunSequencer(sequencer, false, DRIVER_RIGHT_TRIGGER)));
+    DRIVER_RIGHT_BUMPER.onTrue(new ParallelCommandGroup(new RunIntake(intake, true, DRIVER_RIGHT_BUMPER), new RunSequencer(sequencer, true, DRIVER_RIGHT_BUMPER)));
+    DRIVER_START_BUTTON.onTrue(new InstantCommand(m_driveSubsystem::resetGyro));
+    DRIVER_Y_BUTTON.onTrue(new ParallelCommandGroup(new SpinUp(shooter, 80, 1, DRIVER_Y_BUTTON), new RunSequencer(sequencer, false, DRIVER_Y_BUTTON)));
   }
 
   public Command getAutonomousCommand() {
