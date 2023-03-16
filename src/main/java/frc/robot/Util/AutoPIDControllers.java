@@ -1,18 +1,18 @@
-package frc.robot.subsystems;
+package frc.robot.Util;
 
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
 
-public class PIDContollers {
-    private PIDContollers instance;
+public class AutoPIDControllers {
+    private AutoPIDControllers instance;
 
-    public PIDContollers() {
+    public AutoPIDControllers() {
         
     }
 
     public void getInstance(){
         if(instance == null) {
-            instance = new PIDContollers();
+            instance = new AutoPIDControllers();
         }
     }
 
@@ -42,7 +42,9 @@ public class PIDContollers {
             Constants.PIDConstants.CRITICAL_THETA_PID0_I,
             Constants.PIDConstants.CRITICAL_THETA_PID0_D
         );
-            
+          
+        COMMAND_PID.enableContinuousInput(0, 360);
+
         return COMMAND_PID; 
     }
 }

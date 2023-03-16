@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.EncoderType;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAlternateEncoder.Type;
@@ -11,9 +13,10 @@ import com.revrobotics.SparkMaxAlternateEncoder.Type;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
-    private CANSparkMax window = new CANSparkMax(15, MotorType.kBrushed);
+    private CANSparkMax window;
     private SparkMaxPIDController window_PID;
     private RelativeEncoder window_Encoder;
     private ArmSubsystem instance;
@@ -29,13 +32,17 @@ public class ArmSubsystem extends SubsystemBase {
     public void setup() {
         window.restoreFactoryDefaults();
 
+        window = new CANSparkMax(Constants.MotorIDs.ARM_ID, MotorType.kBrushed);
+
         window_PID = window.getPIDController();
         window_PID.setOutputRange(-270, 270);
 
-        window_Encoder = window.getAlternateEncoder(Type.kQuadrature , 8192);
+        window_Encoder = window.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 8192);
         window_Encoder.setPosition(0);
 
         window_Encoder.setPositionConversionFactor(360);
+
+        window_PID.setFeedbackDevice(window_Encoder);
 
         window.setSmartCurrentLimit(20);
 

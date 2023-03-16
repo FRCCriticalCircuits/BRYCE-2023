@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
@@ -24,14 +25,16 @@ public class Module extends SubsystemBase{
     private int forward_ID, turn_ID, cancoder_ID;
     private double gain, angleOffset;
     private boolean EncoderReversed;
-    
+    private boolean isPositionControl;
+    private PIDController controller = new PIDController(0.003455, 0.000009, 0);
 
-    public Module(int forward_ID, int turn_ID, int cancoder_ID, double angleOffset, boolean EncoderReversed) {
+    public Module(int forward_ID, int turn_ID, int cancoder_ID, double angleOffset, boolean EncoderReversed, boolean isPositionControl) {
         this.forward_ID = forward_ID;
         this.turn_ID = turn_ID;
         this.cancoder_ID = cancoder_ID;
         this.angleOffset = angleOffset;
         this.EncoderReversed = EncoderReversed;
+        this.isPositionControl = isPositionControl;
 
         setup();
     }
@@ -46,11 +49,17 @@ public class Module extends SubsystemBase{
 
         forwardPID.setSmartMotionMaxVelocity(Constants.PhysicalConstants.MAX_VELOCITY_RPM, 0);
 
+        controller.enableContinuousInput(-180, 180);
+
+        forward.setSmartCurrentLimit(30);
+        turn.setSmartCurrentLimit(30);
+
         forwardEncoder = forward.getEncoder();
         turnEncoder = turn.getEncoder();
 
         canCoder.configSensorDirection(EncoderReversed);
         canCoder.configMagnetOffset(angleOffset);
+        canCoder.setPosition(getAbsoluteAngle());
 
         turnEncoder.setPositionConversionFactor(((1 / Constants.PhysicalConstants.ROTATION_GEAR_RATIO) * 360) % 360);
         forwardEncoder.setPositionConversionFactor((1 / Constants.PhysicalConstants.DRIVE_GEAR_RATIO) * Math.PI * 4);
@@ -59,10 +68,12 @@ public class Module extends SubsystemBase{
 
         forwardPID.setFeedbackDevice(forwardEncoder);
         turnPID.setFeedbackDevice(turnEncoder);
+        //controller.setIntegratorRange(-3, 3);
 
         forwardEncoder.setPosition(0.0);
-        canCoder.setPositionToAbsolute();
         turnEncoder.setPosition(canCoder.getAbsolutePosition());
+
+        setNormal();
 
         forward.burnFlash();
         turn.burnFlash();
@@ -112,8 +123,14 @@ public class Module extends SubsystemBase{
         forwardEncoder.setPosition(0);
     }
 
+    public void checkEncoder() {
+        if(Math.abs(getAbsoluteAngle()) - (Math.abs(getAngleCancoder()) % 360) > 1){
+            turnEncoder.setPosition(getAbsoluteAngle());
+        }
+    }
+
     public double closestAngle(double angle) {
-        double dir = (angle % 360) - (getAngle() % 360);
+        double dir = (angle % 360) - (getAngleCancoder() % 360);
 
         if(Math.abs(dir) > 180){
             dir = -(Math.signum(dir) * 360) + dir;
@@ -127,13 +144,19 @@ public class Module extends SubsystemBase{
         double setpointAngleInvert = closestAngle(angle + 180);
 
         if(Math.abs(setpointAngle) <= Math.abs(setpointAngleInvert)){
-            
             setGain(1);
-            turnPID.setReference(getAngle() + setpointAngle, ControlType.kPosition);
+            if(isPositionControl){
+                turnPID.setReference(getAngleCancoder() + setpointAngle, ControlType.kPosition);
+            }else{
+                turnPID.setReference(controller.calculate(getAngleCancoder(), getAngleCancoder() + setpointAngle), ControlType.kDutyCycle);
+            }
         }else{
-
             setGain(-1);
-            turnPID.setReference(getAngle() + setpointAngleInvert, ControlType.kPosition);
+            if(isPositionControl){
+                turnPID.setReference(getAngleCancoder() + setpointAngleInvert, ControlType.kPosition);
+            }else{
+                turnPID.setReference(controller.calculate(getAngleCancoder(), getAngleCancoder() + setpointAngleInvert), ControlType.kDutyCycle);
+            }
         }
     }
 
@@ -141,13 +164,18 @@ public class Module extends SubsystemBase{
         forward.set(gain * speed);
     }
 
-    public void setState(SwerveModuleState state){
+    public void setState(SwerveModuleState state, boolean isOpenLoop){
         SwerveModuleState.optimize(state, getRotation());
         double velocity = state.speedMetersPerSecond;
         double angle = state.angle.getDegrees();
 
         setAngle(angle + 180);
-        forward.set(gain * velocity / 12);
+        
+        if(isOpenLoop){
+            setSpeed(velocity / 12);
+        }else{
+            forwardPID.setReference(Units.metersToInches(velocity) * gain, ControlType.kVelocity);
+        }
     }
 
     public void setGain(double gain){
@@ -173,11 +201,11 @@ public class Module extends SubsystemBase{
     }
 
     public Rotation2d getRotation() {
-        return Rotation2d.fromDegrees(getAngle());
+        return Rotation2d.fromDegrees(getAngleCancoder());
     }
 
     public double getDistance() {
-        return (forwardEncoder.getPosition());
+        return Units.inchesToMeters(forwardEncoder.getPosition());
     }
 
     /* DEPRECIATED FOR REMOVAL
@@ -194,7 +222,6 @@ public class Module extends SubsystemBase{
 
     @Override
     public void periodic(){
-        
+        //checkEncoder();
     }
-
 }

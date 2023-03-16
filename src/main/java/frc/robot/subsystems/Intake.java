@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
@@ -28,7 +30,8 @@ public class Intake extends SubsystemBase {
         Intake_Left.setSmartCurrentLimit(20);
         Intake_Right.setSmartCurrentLimit(20);
 
-        Intake_Right.setInverted(false);
+        Intake_Right.setInverted(true);
+        Intake_Left.setInverted(false);
 
         intake1PID = Intake_Left.getPIDController();
         intake2PID = Intake_Right.getPIDController();
@@ -59,12 +62,12 @@ public class Intake extends SubsystemBase {
 
     public void runIntake() {
         Intake_Left.set(.5);
-        Intake_Right.set(.5);
+        Intake_Right.set(-.5);
     }
 
     public void outake() {
         Intake_Left.set(-0.3);
-        Intake_Right.set(-0.3);
+        Intake_Right.set(0.3);
     }
 
     public void stopIntake() {
