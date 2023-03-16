@@ -44,8 +44,14 @@ public final class Constants {
     public static final int RIGHT_INTAKE_ID = 20;
     public static final int LEFT_INTAKE_ID = 21;
 
-    public static final int FLYWHEEL_TOP_ID = 30;
-    public static final int FLYWHEEL_BUTTOM_ID = 31;
+    public static final int FLYWHEEL_TOP_ID = 15;
+    public static final int FLYWHEEL_BUTTOM_ID = 16;
+
+    public static final int ARM_ID = 25;
+
+    public static final int SEQUENCER_PWM_ID = 0;
+
+    public static final boolean SEQUENCER_ISREVERSED = false;
   }
 
   public static class PhysicalConstants {
@@ -54,6 +60,7 @@ public final class Constants {
 
     public static final double MAX_VELOCITY_RPM = 217.5;
     public static final double MAX_VELOCITY_RPS = 3.625;
+    public static final double FLYWHEEL_MAX_VELOCITY = 80;
 
     public static final double SIDE_LENGTH = 38.0;
     public static final double SIDE_WIDTH = 22.0;
@@ -64,6 +71,7 @@ public final class Constants {
 
 
     public static final double LL_HEIGHT = 1;
+    public static final double LL_OFFSET = 5;
     public static final double LL_CUBE_GOAL_HEIGHT = 2;
     public static final double LL_PICKUP_GOAL_HEIGHT = 4;
 
@@ -82,45 +90,45 @@ public final class Constants {
     // DRIVE PID's
     // -------------------------
 
-    public static final double FRONT_LEFT_FORWARD_PID0_P = 0.01;
+    public static final double FRONT_LEFT_FORWARD_PID0_P = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_I = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_D = 0;
-    public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.00011;
+    public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.03618;
 
-    public static final double FRONT_LEFT_ROTATION_PID0_P = 0.003405;
-    public static final double FRONT_LEFT_ROTATION_PID0_I = 0;
+    public static final double FRONT_LEFT_ROTATION_PID0_P = 0; // Fomerly 0.003405
+    public static final double FRONT_LEFT_ROTATION_PID0_I = 0; // Fomerly 0.001
     public static final double FRONT_LEFT_ROTATION_PID0_D = 0;
-    public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.00001;
+    public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double FRONT_RIGHT_FORWARD_PID0_P = 0.01;
+    public static final double FRONT_RIGHT_FORWARD_PID0_P = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_I = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_D = 0;
-    public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.00011;
+    public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.03618;
 
-    public static final double FRONT_RIGHT_ROTATION_PID0_P = 0.003405;
+    public static final double FRONT_RIGHT_ROTATION_PID0_P = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_I = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_D = 0;
-    public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.00002;
+    public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double REAR_LEFT_FORWARD_PID0_P = 0.01;
+    public static final double REAR_LEFT_FORWARD_PID0_P = 0;
     public static final double REAR_LEFT_FORWARD_PID0_I = 0;
     public static final double REAR_LEFT_FORWARD_PID0_D = 0;
-    public static final double REAR_LEFT_FORWARD_PID0_FF = 0.00011;
+    public static final double REAR_LEFT_FORWARD_PID0_FF = 0.03618;
 
-    public static final double REAR_LEFT_ROTATION_PID0_P = 0.003405;
+    public static final double REAR_LEFT_ROTATION_PID0_P = 0;
     public static final double REAR_LEFT_ROTATION_PID0_I = 0;
     public static final double REAR_LEFT_ROTATION_PID0_D = 0;
-    public static final double REAR_LEFT_ROTATION_PID0_FF = 0.00001;
+    public static final double REAR_LEFT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double REAR_RIGHT_FORWARD_PID0_P = 0.01;
+    public static final double REAR_RIGHT_FORWARD_PID0_P = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_I = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_D = 0;
-    public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.00011;
+    public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.03618;
 
-    public static final double REAR_RIGHT_ROTATION_PID0_P = 0.003405;
+    public static final double REAR_RIGHT_ROTATION_PID0_P = 0;
     public static final double REAR_RIGHT_ROTATION_PID0_I = 0;
     public static final double REAR_RIGHT_ROTATION_PID0_D = 0;
-    public static final double REAR_RIGHT_ROTATION_PID0_FF = 0.00001;
+    public static final double REAR_RIGHT_ROTATION_PID0_FF = 0.000018;
 
     // ------------------
 
@@ -138,15 +146,20 @@ public final class Constants {
     //  OTHER MOTOR PID's
     // ------------------------
 
-    public static final double WINDOW_PID0_P = 1;
+    public static final double WINDOW_PID0_P = 0;
     public static final double WINDOW_PID0_I = 0;
     public static final double WINDOW_PID0_D = 0;
     public static final double WINDOW_PID0_F = 0;
 
-    public static final double FLYWHEEL_PID0_P = 1;
-    public static final double FLYWHEEL_PID0_I = 0;
-    public static final double FLYWHEEL_PID0_D = 0;
-    public static final double FLYWHEEL_PID0_F = 0;
+    public static final double FLYWHEELTOP_PID0_P = 0.001;
+    public static final double FLYWHEELTOP_PID0_I = 0;
+    public static final double FLYWHEELTOP_PID0_D = 0;
+    public static final double FLYWHEELTOP_PID0_F = 0.0300;
+
+    public static final double FLYWHEELBUTTOM_PID0_P = 0.001;
+    public static final double FLYWHEELBUTTOM_PID0_I = 0;
+    public static final double FLYWHEELBUTTOM_PID0_D = 0;
+    public static final double FLYWHEELBUTTOM_PID0_F = 0.0342;
 
     public static final double ARM_PID0_P = 1;
     public static final double ARM_PID0_I = 0;
@@ -155,15 +168,15 @@ public final class Constants {
 
     // ------------------------
 
-    public static final double CRITICAL_X_PID0_P = 1;
+    public static final double CRITICAL_X_PID0_P = 2;
     public static final double CRITICAL_X_PID0_I = 0;
     public static final double CRITICAL_X_PID0_D = 0;
 
-    public static final double CRITICAL_Y_PID0_P = 1;
+    public static final double CRITICAL_Y_PID0_P = 2;
     public static final double CRITICAL_Y_PID0_I = 0;
     public static final double CRITICAL_Y_PID0_D = 0;
 
-    public static final double CRITICAL_THETA_PID0_P = 1;
+    public static final double CRITICAL_THETA_PID0_P = 2;
     public static final double CRITICAL_THETA_PID0_I = 0;
     public static final double CRITICAL_THETA_PID0_D = 0;
   }
