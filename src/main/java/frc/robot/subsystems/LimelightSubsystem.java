@@ -1,15 +1,8 @@
 package frc.robot.subsystems;
 
-import java.security.CodeSource;
-
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.ADXL345_I2C.AllAxes;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -54,7 +47,7 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     public Double[] getId() {
-        return table.getEntry("tid").getDoubleArray(new Double[6]);
+        return table.getEntry("tid").getDoubleArray(new Double[0]);
     }
 
     public TargetType getTarget(){
@@ -91,7 +84,6 @@ public class LimelightSubsystem extends SubsystemBase {
     public void periodic(){
         SmartDashboard.putNumberArray("ID", getId());
         SmartDashboard.putBoolean("IS TARGET", isTarget());
-        SmartDashboard.putNumber("PIPELINE", getArea());
     }
 
 }
