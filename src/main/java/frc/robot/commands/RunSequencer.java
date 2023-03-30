@@ -11,6 +11,7 @@ public class RunSequencer extends CommandBase {
     private boolean isReversed;
     private double time = 0;
     private double startDelta;
+    private double speed = 0;
 
     /*
         CONSTRUCTOR FOR COMMAND
@@ -42,6 +43,31 @@ public class RunSequencer extends CommandBase {
         addRequirements(sequencer);
     }
 
+    public RunSequencer(Sequencer sequencer, double speed, boolean isReversed, Trigger trigger) {
+        this.sequencer = sequencer;
+        this.isReversed = isReversed;
+        this.trigger = trigger;
+        this.speed = speed;
+        
+        addRequirements(sequencer);
+    }
+
+    /*
+        CONSTRUCTOR FOR COMMAND
+        
+        RUNS THE SEQUENCER FOR A NUMBER OF SECONDS
+
+        RECOMMENDED FOR AUTONOMOUS
+    */
+    public RunSequencer(Sequencer sequencer, double speed, boolean isReversed, double time) {
+        this.sequencer = sequencer;
+        this.isReversed = isReversed;
+        this.time = time;
+        this.speed = speed;
+        
+        addRequirements(sequencer);
+    }
+
     @Override
     public void initialize() {
         startDelta = Timer.getFPGATimestamp();
@@ -50,7 +76,11 @@ public class RunSequencer extends CommandBase {
     @Override
     public void execute() {
         if(trigger.getAsBoolean() || (Timer.getFPGATimestamp() - startDelta) < time){
-            sequencer.run(isReversed);
+            if(Math.abs(speed) > 0){
+                sequencer.run(speed, isReversed);
+            }else{
+                sequencer.run(isReversed);
+            };
         }
     }
 
