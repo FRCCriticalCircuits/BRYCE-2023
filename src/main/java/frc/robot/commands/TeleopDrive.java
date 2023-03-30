@@ -1,7 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.DriveController;
+import frc.robot.Util.DriveController;
 import frc.robot.subsystems.DriveSubsystem;
 
 import org.opencv.core.Mat;
@@ -29,16 +29,30 @@ public class TeleopDrive extends CommandBase {
 
   @Override
   public void initialize() {
-    max = 0;
+    drive.setBrakeMode(false);
   }
 
   @Override
   public void execute() {
     
-    x1 = drive.driverJoystick.getRawAxis(0);
-    x2 = drive.driverJoystick.getRawAxis(2);
-    y = drive.driverJoystick.getRawAxis(1);
+    x1 = drive.driverJoystick.getLeftX();
+    x2 = -drive.driverJoystick.getRightX();
+    y = drive.driverJoystick.getLeftY();
     
+    
+    if(Math.abs(y) < 0.1) {
+      y = 0;
+    }
+
+    if(Math.abs(x1) < 0.12) {
+      x1 = 0;
+    }
+    
+    if(Math.abs(x2) < 0.1) {
+      x2 = 0;
+    }
+    
+
     driveController.drive(x1, y, x2, fieldOrientedDrive);
   }
 

@@ -39,8 +39,8 @@ public class ShooterSubsystem extends SubsystemBase {
         flywheel_TopEncoder = flywheel_Top.getEncoder();
         flywheel_ButtomEncoder = flywheel_buttom.getEncoder();
 
-        flywheel_TopEncoder.setVelocityConversionFactor(1 / (4 * Math.PI * 12));
-        flywheel_ButtomEncoder.setVelocityConversionFactor(1 / (4 * Math.PI * 12));
+        flywheel_TopEncoder.setVelocityConversionFactor((1 / (4 * Math.PI * 12)));
+        flywheel_ButtomEncoder.setVelocityConversionFactor((1 / (4 * Math.PI * 12)));
 
         flywheel_TopPID.setP(Constants.PIDConstants.FLYWHEELTOP_PID0_P, 0);
         flywheel_TopPID.setI(Constants.PIDConstants.FLYWHEELTOP_PID0_I, 0);

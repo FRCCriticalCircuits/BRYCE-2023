@@ -1,7 +1,8 @@
 package frc.robot.Util;
 
 public class GoalType {
-    enum goalType {
+    public enum goalType {
+        NONE,
         LOW,
         MID,
         HIGH

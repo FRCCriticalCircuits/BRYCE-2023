@@ -49,7 +49,7 @@ public class DriveStraight {
             List.of(
                 //new Pose2d(-1.5, 0, new Rotation2d(0)).getTranslation()
             ),
-            new Pose2d(-3, 0, new Rotation2d(0)), 
+            new Pose2d(1, 0, new Rotation2d(0)), 
             config
         );
     
@@ -66,7 +66,7 @@ public class DriveStraight {
                         pidContollers.CRITICAL_THETA().getP(),
                         pidContollers.CRITICAL_THETA().getI(),
                         pidContollers.CRITICAL_THETA().getD(),
-                        new Constraints(1, .5)
+                        new Constraints(1, .8)
                     )
                 ),
                 drive::OutputModuleInfo, 

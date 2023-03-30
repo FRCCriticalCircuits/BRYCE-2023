@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.Util;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -8,14 +8,15 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.subsystems.DriveSubsystem;
 
 public class DriveController extends SubsystemBase {
     private DriveSubsystem drive;
-    private SlewRateLimiter limiter = new SlewRateLimiter(16);
+    private SlewRateLimiter limiter = new SlewRateLimiter(14);
     private SwerveDriveKinematics kinematics = Constants.PhysicalConstants.KINEMATICS;
     private SwerveControllerCommand driveControllerCommand;
-    private PIDController controller = new PIDController(0.004, 0, 0);
-    private double kXY = 0;
+    private PIDController controller = new PIDController(0.1, 0, 0);
+    private double desiredheading, kXY = 0;
 
     public DriveController(DriveSubsystem drive) {
         this.drive = drive;
@@ -23,29 +24,28 @@ public class DriveController extends SubsystemBase {
     }
 
     public void setup(){
-        
+        desiredheading = drive.getPose().getRotation().getDegrees();
     }
 
-    public void drive(double x1, double y, double x2, boolean fieldOrientedDrive) {
-        x1 *= 13;
-        x2 *= 10;
-        y *= -13;
-
-        driftCorrect(x1, y, x2);
+    public void drive(double y, double x1, double x2, boolean fieldOrientedDrive) {
+        x1 *= Constants.PhysicalConstants.MAX_METERS_PER_SECOND;
+        x2 *= 3.75;
+        y *= Constants.PhysicalConstants.MAX_METERS_PER_SECOND;
+        
+        //driftCorrect(x1, y, x2);
 
         SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(
             !fieldOrientedDrive 
-            ? new ChassisSpeeds(y, x1, x2) : 
-            ChassisSpeeds.fromFieldRelativeSpeeds(y, x1, x2, drive.getHeading())
+            ? new ChassisSpeeds(x1, y, -x2) : 
+            ChassisSpeeds.fromFieldRelativeSpeeds(x1, y, x2, drive.getRotation2d())
         );
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, 13);
+        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Constants.PhysicalConstants.MAX_METERS_PER_SECOND);
         drive.setStates(moduleStates);
     }
 
     public void driftCorrect(double x, double y, double x2) {
         double xy = Math.abs(x) + Math.abs(y);
-        double desiredheading = 0;
 
         if(Math.abs(x2) > 0 || kXY <= 0.01){
             desiredheading = drive.getPose().getRotation().getDegrees();

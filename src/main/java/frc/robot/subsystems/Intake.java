@@ -21,14 +21,16 @@ public class Intake extends SubsystemBase {
     public Intake() {
         Intake_Left = new CANSparkMax(20, MotorType.kBrushless);
         Intake_Right = new CANSparkMax(21, MotorType.kBrushless);
+
+        setup();
     }
 
     public void setup() {
         Intake_Left.restoreFactoryDefaults();
         Intake_Right.restoreFactoryDefaults();
 
-        Intake_Left.setSmartCurrentLimit(20);
-        Intake_Right.setSmartCurrentLimit(20);
+        Intake_Left.setSmartCurrentLimit(40);
+        Intake_Right.setSmartCurrentLimit(40);
 
         Intake_Right.setInverted(true);
         Intake_Left.setInverted(false);
@@ -46,8 +48,8 @@ public class Intake extends SubsystemBase {
         intake2PID.setD(Constants.PIDConstants.INTAKE_PID0_D, 0);
         intake2PID.setFF(Constants.PIDConstants.INTAKE_PID0_F, 0);
 
-        Intake_Left.setIdleMode(IdleMode.kCoast);
-        Intake_Right.setIdleMode(IdleMode.kCoast);
+        Intake_Left.setIdleMode(IdleMode.kBrake);
+        Intake_Right.setIdleMode(IdleMode.kBrake);
 
         Intake_Left.burnFlash();
         Intake_Right.burnFlash();
@@ -62,12 +64,12 @@ public class Intake extends SubsystemBase {
 
     public void runIntake() {
         Intake_Left.set(.5);
-        Intake_Right.set(-.5);
+        Intake_Right.set(.5);
     }
 
     public void outake() {
         Intake_Left.set(-0.3);
-        Intake_Right.set(0.3);
+        Intake_Right.set(-0.3);
     }
 
     public void stopIntake() {

@@ -43,7 +43,7 @@ public class AutoPIDControllers {
             Constants.PIDConstants.CRITICAL_THETA_PID0_D
         );
           
-        COMMAND_PID.enableContinuousInput(0, 360);
+        //COMMAND_PID.enableContinuousInput(-180, 180);
 
         return COMMAND_PID; 
     }
