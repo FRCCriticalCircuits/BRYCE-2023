@@ -13,10 +13,10 @@ public final class Constants {
     //  OPERATORS THRESHOLDS
     // -----------------------------
 
-    public static final double DRIVER_X1_THRESHOLD = 0.01;
-    public static final double DRIVER_X2_THRESHOLD = 0.01;
-    public static final double DRIVER_Y1_THRESHOLD = 0.01;
-    public static final double DRIVER_Y2_THRESHOLD = 0.01;
+    public static final double DRIVER_X1_THRESHOLD = 0.02;
+    public static final double DRIVER_X2_THRESHOLD = 0.02;
+    public static final double DRIVER_Y1_THRESHOLD = 0.02;
+    public static final double DRIVER_Y2_THRESHOLD = 0.02;
 
     public static final double OPERATOR_X1_THEESHOLD = 0.01;
     public static final double OPERATOR_X2_THRESHOLD = 0.01;
@@ -49,9 +49,9 @@ public final class Constants {
 
     public static final int ARM_ID = 25;
 
-    public static final int SEQUENCER_PWM_ID = 0;
+    public static final int SEQUENCER_ID = 18;
 
-    public static final boolean SEQUENCER_ISREVERSED = false;
+    public static final boolean SEQUENCER_ISREVERSED = true;
   }
 
   public static class PhysicalConstants {
@@ -61,14 +61,14 @@ public final class Constants {
     public static final double MAX_VELOCITY_RPM = 217.5;
     public static final double MAX_VELOCITY_RPS = 3.625;
     public static final double FLYWHEEL_MAX_VELOCITY = 80;
+    public static final double MAX_METERS_PER_SECOND = 5;
 
     public static final double SIDE_LENGTH = 38.0;
     public static final double SIDE_WIDTH = 22.0;
     public static final double SIDE_TO_CORNER = 21.9544984001;
-    public static final double TRACK_WIDTH = Units.inchesToMeters(20);
-    public static final double TRACK_LENGTH = Units.inchesToMeters(36);
+    public static final double TRACK_WIDTH = Units.inchesToMeters(22 - 2.625);
+    public static final double TRACK_LENGTH = Units.inchesToMeters(38 - 2.625);
     public static final double TRACK_RADIUS = 18.2242969686;
-
 
     public static final double LL_HEIGHT = 1;
     public static final double LL_OFFSET = 5;
@@ -76,10 +76,10 @@ public final class Constants {
     public static final double LL_PICKUP_GOAL_HEIGHT = 4;
 
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
-      new Translation2d(TRACK_LENGTH/2, TRACK_WIDTH/2),
-      new Translation2d(TRACK_LENGTH/2, -TRACK_WIDTH/2),
-      new Translation2d(-TRACK_LENGTH/2, TRACK_WIDTH/2),
-      new Translation2d(-TRACK_LENGTH/2, -TRACK_WIDTH/2)
+      new Translation2d((TRACK_LENGTH / 2), (TRACK_WIDTH / 2)), // - +
+      new Translation2d((TRACK_LENGTH / 2), -(TRACK_WIDTH / 2)), // - -
+      new Translation2d(-(TRACK_LENGTH / 2), (TRACK_WIDTH / 2)), // + +
+      new Translation2d(-(TRACK_LENGTH / 2), -(TRACK_WIDTH / 2)) // + -
     );
 
   }
@@ -90,40 +90,40 @@ public final class Constants {
     // DRIVE PID's
     // -------------------------
 
-    public static final double FRONT_LEFT_FORWARD_PID0_P = 0;
+    public static final double FRONT_LEFT_FORWARD_PID0_P = 1.0005;
     public static final double FRONT_LEFT_FORWARD_PID0_I = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_D = 0;
-    public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.03618;
+    public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.315;
 
     public static final double FRONT_LEFT_ROTATION_PID0_P = 0; // Fomerly 0.003405
     public static final double FRONT_LEFT_ROTATION_PID0_I = 0; // Fomerly 0.001
     public static final double FRONT_LEFT_ROTATION_PID0_D = 0;
     public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double FRONT_RIGHT_FORWARD_PID0_P = 0;
+    public static final double FRONT_RIGHT_FORWARD_PID0_P = 1.005;
     public static final double FRONT_RIGHT_FORWARD_PID0_I = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_D = 0;
-    public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.03618;
+    public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.315;
 
     public static final double FRONT_RIGHT_ROTATION_PID0_P = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_I = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_D = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double REAR_LEFT_FORWARD_PID0_P = 0;
+    public static final double REAR_LEFT_FORWARD_PID0_P = 1.005;
     public static final double REAR_LEFT_FORWARD_PID0_I = 0;
     public static final double REAR_LEFT_FORWARD_PID0_D = 0;
-    public static final double REAR_LEFT_FORWARD_PID0_FF = 0.03618;
+    public static final double REAR_LEFT_FORWARD_PID0_FF = 0.315;
 
     public static final double REAR_LEFT_ROTATION_PID0_P = 0;
     public static final double REAR_LEFT_ROTATION_PID0_I = 0;
     public static final double REAR_LEFT_ROTATION_PID0_D = 0;
     public static final double REAR_LEFT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double REAR_RIGHT_FORWARD_PID0_P = 0;
+    public static final double REAR_RIGHT_FORWARD_PID0_P = 1.005;
     public static final double REAR_RIGHT_FORWARD_PID0_I = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_D = 0;
-    public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.03618;
+    public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.315;
 
     public static final double REAR_RIGHT_ROTATION_PID0_P = 0;
     public static final double REAR_RIGHT_ROTATION_PID0_I = 0;
@@ -168,15 +168,15 @@ public final class Constants {
 
     // ------------------------
 
-    public static final double CRITICAL_X_PID0_P = 2;
+    public static final double CRITICAL_X_PID0_P = 5;
     public static final double CRITICAL_X_PID0_I = 0;
     public static final double CRITICAL_X_PID0_D = 0;
 
-    public static final double CRITICAL_Y_PID0_P = 2;
+    public static final double CRITICAL_Y_PID0_P = 5;
     public static final double CRITICAL_Y_PID0_I = 0;
     public static final double CRITICAL_Y_PID0_D = 0;
 
-    public static final double CRITICAL_THETA_PID0_P = 2;
+    public static final double CRITICAL_THETA_PID0_P = 1.5;
     public static final double CRITICAL_THETA_PID0_I = 0;
     public static final double CRITICAL_THETA_PID0_D = 0;
   }
