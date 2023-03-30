@@ -1,14 +1,15 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Sequencer extends SubsystemBase{
-    private Spark sequencer = new Spark(Constants.MotorIDs.SEQUENCER_PWM_ID);        
+    private CANSparkMax sequencer = new CANSparkMax(Constants.MotorIDs.SEQUENCER_ID, MotorType.kBrushless);        
 
     public Sequencer(){
-        sequencer.setSafetyEnabled(true);
         sequencer.setInverted(Constants.MotorIDs.SEQUENCER_ISREVERSED);
     }
 
@@ -18,10 +19,16 @@ public class Sequencer extends SubsystemBase{
         }else{
             sequencer.set(-.4);
         }
-
-        sequencer.feed();
     }
     
+    public void run(double percentOutput, boolean isReversed) {
+        if(!isReversed){
+            sequencer.set(percentOutput);
+        }else{
+            sequencer.set(-percentOutput);
+        }
+    }
+
     public void stop() {
         sequencer.setVoltage(0);
     }
