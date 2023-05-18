@@ -69,9 +69,14 @@ public class ShooterSubsystem extends SubsystemBase {
         }
     }
 
+    public void setReversed(boolean isReversed) {
+        flywheel_Top.setInverted(isReversed);
+        flywheel_buttom.setInverted(isReversed);
+    }
+
     public void setSpeed(double velocity){
-        if(velocity > Constants.PhysicalConstants.FLYWHEEL_MAX_VELOCITY){
-            velocity = Constants.PhysicalConstants.FLYWHEEL_MAX_VELOCITY;
+        if(Math.abs(velocity) > Constants.PhysicalConstants.FLYWHEEL_MAX_VELOCITY){
+            velocity = Math.signum(velocity) * Constants.PhysicalConstants.FLYWHEEL_MAX_VELOCITY;
         };
 
         flywheel_TopPID.setReference(velocity, ControlType.kVelocity);
@@ -92,6 +97,14 @@ public class ShooterSubsystem extends SubsystemBase {
         };
 
         flywheel_ButtomPID.setReference(velocity, ControlType.kVelocity);
+    }
+
+    public void setTop(double speed) {
+        flywheel_Top.set(speed);
+    }
+
+    public void setButtom(double speed) {
+        flywheel_buttom.set(speed);
     }
 
     public double getVelocityTop(){

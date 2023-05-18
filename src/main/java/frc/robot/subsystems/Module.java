@@ -67,7 +67,7 @@ public class Module extends SubsystemBase{
         //controller.enableContinuousInput(-180, 180);
 
         forward.setSmartCurrentLimit(40);
-        turn.setSmartCurrentLimit(0);
+        turn.setSmartCurrentLimit(40);
 
         forwardEncoder = forward.getEncoder();
         turnEncoder = turn.getEncoder();

@@ -30,8 +30,8 @@ public class DriveSubsystem extends SubsystemBase {
       Constants.MotorIDs.FRONT_LEFT_FORWARD_ID,
       Constants.MotorIDs.FRONT_LEFT_ROTATION_ID,
       Constants.MotorIDs.FRONT_LEFT_CANCODER_ID,
-      -52.1 + 180,
-      true,
+      56.6 - 114,
+      false,
       false,
       false
     );
@@ -40,7 +40,7 @@ public class DriveSubsystem extends SubsystemBase {
         Constants.MotorIDs.FRONT_RIGHT_FORWARD_ID, 
         Constants.MotorIDs.FRONT_RIGHT_ROTATION_ID,
         Constants.MotorIDs.FRONT_RIGHT_CANCODER_ID,
-        66.44,
+        -64.863 + 129,
         false,
         false,
         false
@@ -50,8 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
         Constants.MotorIDs.REAR_LEFT_FORWARD_ID, 
         Constants.MotorIDs.REAR_LEFT_ROTATION_ID,
         Constants.MotorIDs.REAR_LEFT_CANCODER_ID,
-        65 + 180,
-        true,
+        -65 + 130,
+        false,
         false,
         false
     );
@@ -60,7 +60,7 @@ public class DriveSubsystem extends SubsystemBase {
         Constants.MotorIDs.REAR_RIGHT_FORWARD_ID, 
         Constants.MotorIDs.REAR_RIGHT_ROTATION_ID,
         Constants.MotorIDs.REAR_RIGHT_CANCODER_ID,
-        -159,
+        -50 - 104,
         false,
         false,
         false
@@ -75,6 +75,8 @@ public class DriveSubsystem extends SubsystemBase {
     private SwerveDriveOdometry odometry = new SwerveDriveOdometry(Constants.PhysicalConstants.KINEMATICS, new Rotation2d(0), getSwerveModulePositions());
 
     private Pose2d pose = new Pose2d();
+
+    private double Gyro_offset = 0;
 
     private SwerveDrivePoseEstimator poseEstimator = new SwerveDrivePoseEstimator(Constants.PhysicalConstants.KINEMATICS, new Rotation2d(0), getSwerveModulePositions(), new Pose2d());
     
@@ -213,6 +215,10 @@ public class DriveSubsystem extends SubsystemBase {
     odometry.resetPosition(getRotation2d(), getSwerveModulePositions(), pose);
   }
 
+  public void setGyroOffset(double offset) {
+    Gyro_offset = offset;
+  }
+
   public void resetHeading() {
     gyro.zeroYaw();
   }
@@ -224,7 +230,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return heading
   */
   public double getHeading() {
-    return gyro.getYaw() * -1;
+    return gyro.getYaw() * -1 - Gyro_offset;
   }
 
   public Rotation2d getRotation2d() {
@@ -269,15 +275,15 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("REAR LEFT ANGLE", rearLeft.getAngleCancoder());
     SmartDashboard.putNumber("REAR RIGHT ANGLE", rearRight.getAngleCancoder());
     
-    SmartDashboard.putNumber("FRONT LEFT ABSOLUTE", frontLeft.getAbsoluteAngle());
-    SmartDashboard.putNumber("FRONT RIGHT ABSOLUTE", frontRight.getAbsoluteAngle());
-    SmartDashboard.putNumber("REAR LEFT ABSOLUTE", rearLeft.getAbsoluteAngle());
-    SmartDashboard.putNumber("REAR RIGHT ABSOLUTE", rearRight.getAbsoluteAngle());
+    //SmartDashboard.putNumber("FRONT LEFT ABSOLUTE", frontLeft.getAbsoluteAngle());
+    //SmartDashboard.putNumber("FRONT RIGHT ABSOLUTE", frontRight.getAbsoluteAngle());
+    //SmartDashboard.putNumber("REAR LEFT ABSOLUTE", rearLeft.getAbsoluteAngle());
+    //SmartDashboard.putNumber("REAR RIGHT ABSOLUTE", rearRight.getAbsoluteAngle());
 
-    SmartDashboard.putNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
-    SmartDashboard.putNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
-    SmartDashboard.putNumber("REAR LEFT SPEED", rearLeft.getSpeed());
-    SmartDashboard.putNumber("REAR RIGHT SPEED", rearRight.getSpeed());
+    //SmartDashboard.putNumber("FRONT LEFT SPEED", frontLeft.getSpeed());
+    //SmartDashboard.putNumber("FRONT RIGHT SPEED", frontRight.getSpeed());
+    //SmartDashboard.putNumber("REAR LEFT SPEED", rearLeft.getSpeed());
+    //SmartDashboard.putNumber("REAR RIGHT SPEED", rearRight.getSpeed());
 
     //SmartDashboard.putNumber("FRONT LEFT DISTANCE", frontLeft.getDistance());
     //SmartDashboard.putNumber("FRONT RIGHT DISTANCE", frontRight.getDistance());

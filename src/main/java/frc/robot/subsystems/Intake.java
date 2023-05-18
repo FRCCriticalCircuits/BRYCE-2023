@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -63,13 +64,23 @@ public class Intake extends SubsystemBase {
     }
 
     public void runIntake() {
-        Intake_Left.set(.5);
-        Intake_Right.set(.5);
+        if(Intake_Left.getEncoder().getVelocity() > 2000 || Intake_Right.getEncoder().getVelocity() > 2000){
+            Intake_Left.set(.5);
+            Intake_Right.set(.5);
+        }else{
+            Intake_Left.set(.65);
+            Intake_Right.set(.65);
+        }
     }
 
     public void outake() {
-        Intake_Left.set(-0.3);
-        Intake_Right.set(-0.3);
+        if(Math.abs(Intake_Left.getEncoder().getVelocity()) > 2000 || Math.abs(Intake_Right.getEncoder().getVelocity()) > 2000){
+            Intake_Left.set(-.5);
+            Intake_Right.set(-.5);
+        }else{
+            Intake_Left.set(-.65);
+            Intake_Right.set(-.65);
+        }
     }
 
     public void stopIntake() {
@@ -79,7 +90,9 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic(){
-        Intake_Left.getEncoder().getVelocity();
         Intake_Right.getEncoder().getVelocity();
+
+        SmartDashboard.putNumber("Intake Left", Intake_Left.getEncoder().getVelocity());
+        SmartDashboard.putNumber("Intake Right", Intake_Right.getEncoder().getVelocity());
     }
 }
