@@ -25,9 +25,14 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.Util.AutoPIDControllers;
+import frc.robot.Util.GoalType.goalType;
+import frc.robot.commands.AutoIntake;
+import frc.robot.commands.AutoShootWithVision;
 import frc.robot.commands.AutoSpinUp;
+import frc.robot.commands.ShootWithVision;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Sequencer;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -36,14 +41,16 @@ public class TwoCargoRightTaxi extends CommandBase{
     Sequencer sequencer;
     ShooterSubsystem shooter;
     Intake intake;
+    LimelightSubsystem limelight;
     AutoPIDControllers autoPIDControllers;
     //String route1 = "frc/paths/route1.wpilib.json";
     //Trajectory route = new Trajectory();
 
-    public TwoCargoRightTaxi(DriveSubsystem drive, ShooterSubsystem shooter, Intake intake, Sequencer sequencer, AutoPIDControllers autoPIDControllers) {
+    public TwoCargoRightTaxi(DriveSubsystem drive, ShooterSubsystem shooter, Intake intake, Sequencer sequencer, LimelightSubsystem limelight, AutoPIDControllers autoPIDControllers) {
         this.drive = drive;
         this.autoPIDControllers = autoPIDControllers;
         this.intake = intake;
+        this.limelight = limelight;
         this.sequencer = sequencer;
         this.shooter = shooter;
 
@@ -51,11 +58,13 @@ public class TwoCargoRightTaxi extends CommandBase{
     }
 
     public Command cargorighttaxi(){
-        List<PathPlannerTrajectory> rightTaxi = PathPlanner.loadPathGroup("Right Taxi", 1.2, 0.7);
+        List<PathPlannerTrajectory> rightTaxi = PathPlanner.loadPathGroup("Right Taxi", 2, 1.7);
         
         HashMap<String, Command> eventMap = new HashMap<>();
 
         eventMap.put("MARKER 1", new PrintCommand("PASSED MARKER 1"));
+        eventMap.put("Intake", new AutoIntake(intake, sequencer, 1.5));
+        eventMap.put("Shoot", new AutoShootWithVision(shooter, sequencer, limelight, goalType.MID, 1.5));
 
         SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
             drive::getPose, 
@@ -66,7 +75,7 @@ public class TwoCargoRightTaxi extends CommandBase{
                 0
             ), 
                 new PIDConstants(
-                0.25, 
+                -0.2, 
                 0, 
                 0
             ), 
@@ -76,9 +85,10 @@ public class TwoCargoRightTaxi extends CommandBase{
         );
 
         return new SequentialCommandGroup(
-            new AutoSpinUp(shooter, sequencer, 0, 1.5, 13),
+            new AutoSpinUp(shooter, sequencer, 1, 10),
+            new InstantCommand(drive::reset, drive),
             autoBuilder.fullAuto(rightTaxi),
-            new InstantCommand(drive::resetHeading, drive)
+            new InstantCommand(() -> drive.setGyroOffset(180), drive)
         );
     }
     
