@@ -90,7 +90,7 @@ public final class Constants {
     // DRIVE PID's
     // -------------------------
 
-    public static final double FRONT_LEFT_FORWARD_PID0_P = 1.0005;
+    public static final double FRONT_LEFT_FORWARD_PID0_P = 1.0035;
     public static final double FRONT_LEFT_FORWARD_PID0_I = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_D = 0;
     public static final double FRONT_LEFT_FORWARD_PID0_FF = 0.315;
@@ -100,7 +100,7 @@ public final class Constants {
     public static final double FRONT_LEFT_ROTATION_PID0_D = 0;
     public static final double FRONT_LEFT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double FRONT_RIGHT_FORWARD_PID0_P = 1.005;
+    public static final double FRONT_RIGHT_FORWARD_PID0_P = 1.0035;
     public static final double FRONT_RIGHT_FORWARD_PID0_I = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_D = 0;
     public static final double FRONT_RIGHT_FORWARD_PID0_FF = 0.315;
@@ -110,7 +110,7 @@ public final class Constants {
     public static final double FRONT_RIGHT_ROTATION_PID0_D = 0;
     public static final double FRONT_RIGHT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double REAR_LEFT_FORWARD_PID0_P = 1.005;
+    public static final double REAR_LEFT_FORWARD_PID0_P = 1.0035;
     public static final double REAR_LEFT_FORWARD_PID0_I = 0;
     public static final double REAR_LEFT_FORWARD_PID0_D = 0;
     public static final double REAR_LEFT_FORWARD_PID0_FF = 0.315;
@@ -120,7 +120,7 @@ public final class Constants {
     public static final double REAR_LEFT_ROTATION_PID0_D = 0;
     public static final double REAR_LEFT_ROTATION_PID0_FF = 0.000018;
 
-    public static final double REAR_RIGHT_FORWARD_PID0_P = 1.005;
+    public static final double REAR_RIGHT_FORWARD_PID0_P = 1.0035;
     public static final double REAR_RIGHT_FORWARD_PID0_I = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_D = 0;
     public static final double REAR_RIGHT_FORWARD_PID0_FF = 0.315;
