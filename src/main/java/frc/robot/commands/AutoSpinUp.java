@@ -76,7 +76,8 @@ public class AutoSpinUp extends CommandBase {
         }
 
         if((Timer.getFPGATimestamp() - startDelta) > delay){
-            sequencer.run(0.3,false);
+            sequencer.run(0.4
+            ,false);
         }
     }
 

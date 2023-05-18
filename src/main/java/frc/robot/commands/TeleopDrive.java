@@ -13,7 +13,7 @@ public class TeleopDrive extends CommandBase {
   private final DriveSubsystem drive;
   private final DriveController driveController;
   private double x1, x2, y;
-  private double max;
+  private double gain = 1;
   private boolean fieldOrientedDrive;
 
   public TeleopDrive(DriveSubsystem drive, DriveController driveController, double x1, double x2, double y, boolean fieldOrientedDrive) {
@@ -27,24 +27,36 @@ public class TeleopDrive extends CommandBase {
     addRequirements(drive);
   }
 
+  public TeleopDrive(DriveSubsystem drive, DriveController driveController, double x1, double x2, double y, boolean fieldOrientedDrive, double gain) {
+    this.drive = drive;
+    this.driveController = driveController;
+    this.x1 = x1;
+    this.x2 = x2;
+    this.y = y;
+    this.gain = gain;
+    this.fieldOrientedDrive = fieldOrientedDrive;
+
+    addRequirements(drive);
+  }
+
   @Override
   public void initialize() {
-    drive.setBrakeMode(false);
+    drive.setBrakeMode(true);
   }
 
   @Override
   public void execute() {
     
-    x1 = drive.driverJoystick.getLeftX();
-    x2 = -drive.driverJoystick.getRightX();
-    y = drive.driverJoystick.getLeftY();
+    x1 = drive.driverJoystick.getLeftX() * gain;
+    x2 = -drive.driverJoystick.getRightX() * gain;
+    y = drive.driverJoystick.getLeftY() * gain;
     
     
     if(Math.abs(y) < 0.1) {
       y = 0;
     }
 
-    if(Math.abs(x1) < 0.12) {
+    if(Math.abs(x1) < 0.1) {
       x1 = 0;
     }
     

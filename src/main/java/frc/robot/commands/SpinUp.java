@@ -62,16 +62,16 @@ public class SpinUp extends CommandBase {
         delay = ((velocity * 5) / 80) * .5;
         
         if(trigger.getAsBoolean() || (Timer.getFPGATimestamp() - startDelta) < time){
-            if(percentSpin > 0){
+            if(Math.abs(percentSpin) > 0){
                 shooter.setSpeedTop(velocity + (velocity * (percentSpin / 2)));
-                shooter.setSpeed(velocity + -(velocity * (percentSpin / 2)));
+                shooter.setSpeedButtom(velocity + -(velocity * (percentSpin / 2)));
             }else{
                 shooter.setSpeed(velocity);
             }
         }
 
         if((Timer.getFPGATimestamp() - delayStartDelta) > delay){
-            sequencer.run(0.1,false);
+            sequencer.run(0.4, false);
         }
     }
 

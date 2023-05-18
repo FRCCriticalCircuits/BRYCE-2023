@@ -49,6 +49,7 @@ public class AutoIntake extends CommandBase{
 
     public void execute() {
         intake.runIntake();
+        sequencer.run(0.4 ,true);
     }
 
     @Override
@@ -58,6 +59,10 @@ public class AutoIntake extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return false;
+        if(timeOver){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

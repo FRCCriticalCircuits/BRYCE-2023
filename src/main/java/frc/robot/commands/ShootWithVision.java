@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Util.GoalType.goalType;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.Sequencer;
@@ -10,8 +11,8 @@ public class ShootWithVision extends CommandBase{
     private ShooterSubsystem shooter;
     private Sequencer sequencer;
     private LimelightSubsystem limelight;
-    private double velocity = 0, time = 0, percentSpin = 0;
-    private boolean TimeOver = false;
+    private double velocity = 0, percentSpin = 0;
+    private Trigger trigger;
 
     public ShootWithVision(ShooterSubsystem shooter, Sequencer sequencer, LimelightSubsystem limelight) {
         this.shooter = shooter;
@@ -21,46 +22,41 @@ public class ShootWithVision extends CommandBase{
         addRequirements(shooter, limelight);
     }
 
-    public ShootWithVision(ShooterSubsystem shooter, Sequencer sequencer, LimelightSubsystem limelight, double time) {
+    public ShootWithVision(ShooterSubsystem shooter, Sequencer sequencer, LimelightSubsystem limelight, Trigger trigger) {
         this.shooter = shooter;
         this.sequencer = sequencer;
+        this.trigger = trigger;
         this.limelight = limelight;
-        this.time = time;
 
         addRequirements(shooter, limelight);
     }
 
     @Override
     public void initialize() {
-        new Thread(
-            () -> {
-                try {
-                    Thread.sleep((int) time * 1000);
-                    TimeOver = true;
-                } catch (Exception e) {
-                }
-            }
-        ).start();
     }
 
     @Override
     public void execute() {
         
         if(limelight.getCurrentGoal() == goalType.MID){
-            velocity = Math.pow(7.222, 0.1922 * limelight.getGoalDistance());
-            //velocity = (2.665) * limelight.getGoalDistance() + 5.905;
+            //velocity = Math.pow(7.222, 0.1922 * limelight.getGoalDistance());
+            velocity = ((2.665) * limelight.getGoalDistance() + 6.905) - 1.25;
+        }else if(limelight.getCurrentGoal() == goalType.HIGH){
+            velocity = ((2.665) * limelight.getGoalDistance() + 6.905) - 0.4;
+        }else if(limelight.getCurrentGoal() == goalType.LOW){
+            velocity = 10;
         }else{
             velocity = 0;
         }
-
+        
         if(percentSpin > 0){
             shooter.setSpeedTop(velocity + (velocity * (percentSpin / 2)));
-            shooter.setSpeed(velocity + -(velocity * (percentSpin / 2)));
+            shooter.setSpeedButtom(velocity + -(velocity * (percentSpin / 2)));
         }else{
             shooter.setSpeed(velocity);
         }
 
-        sequencer.run(0.3, false);
+        sequencer.run(0.4, false);
     }
 
     @Override
@@ -71,7 +67,7 @@ public class ShootWithVision extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        if(TimeOver) {
+        if(!trigger.getAsBoolean()){
             return true;
         }else{
             return false;

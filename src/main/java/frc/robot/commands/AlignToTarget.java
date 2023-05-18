@@ -40,8 +40,8 @@ public class AlignToTarget extends CommandBase {
 
     @Override
     public void initialize() {
-        controller = new PIDController(0.021, 0, 0);
-        //controller.setIntegratorRange(-1.5, 1.5);
+        controller = new PIDController(0.018, 0, 0.002);
+        //controller.setIntegratorRange(1, 1);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class AlignToTarget extends CommandBase {
             y = 0;
         }
 
-        driveController.drive(x1, y, -controller.calculate(limelight.getXOffset(), limelight.getBestGoalOffset()), true);
+        driveController.drive(x1, y, controller.calculate(limelight.getXOffset(), -limelight.getBestGoalOffset()), true);
     }
 
     @Override
